@@ -1,0 +1,9 @@
+spring:
+  application:
+    name: poc-srv-collectors-titleregistration
+  mongodb:
+    uri: ${MONGODB_URI:mongodb://titleregistration:password@localhost:27018/titleregistration?authSource=admin}
+
+server:
+  port: 8081
+  shutdown: graceful

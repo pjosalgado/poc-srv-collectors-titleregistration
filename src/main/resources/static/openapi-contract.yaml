@@ -1,0 +1,155 @@
+openapi: 3.0.3
+
+info:
+  title: poc-srv-collectors-titleregistration
+  description: PoC project for Collector's Channel Title Registration API
+  version: 1.0.0-RC1
+
+servers:
+  - url: http://localhost:8081
+
+tags:
+  - name: Registration
+    description: Registration operations
+
+paths:
+  "/registration/v1/titles":
+    post:
+      operationId: titleCreate
+      summary: Registers a title
+      tags:
+        - Registration
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TitleCreateRequest'
+      responses:
+        '201':
+          description: Title created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TitleCreatedResponse'
+        'default':
+          description: Error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+components:
+  schemas:
+    TitleCreateRequest:
+      type: object
+      required:
+        - name
+        - type
+      properties:
+        name:
+          type: string
+          example: 'Princess Mononoke'
+        originalName:
+          type: string
+          example: 'Mononoke-hime'
+        studio:
+          type: string
+          example: 'Studio Ghibli'
+        type:
+          $ref: '#/components/schemas/TitleType'
+        barcode:
+          type: string
+          example: '825553181548'
+        purchaseDetails:
+          $ref: '#/components/schemas/PurchaseDetailsRequest'
+
+    PurchaseDetailsRequest:
+      type: object
+      required:
+        - store
+        - price
+        - currency
+      properties:
+        store:
+          type: string
+          example: 'Amazon'
+        price:
+          type: number
+          format: float
+          example: 125.39
+        currency:
+          $ref: '#/components/schemas/MonetaryType'
+
+    TitleCreatedResponse:
+      type: object
+      properties:
+        titleId:
+          type: string
+          format: uuid
+          example: '0dc42d37-eb5c-4287-bc51-128260d0ef25'
+        createdDateTime:
+          type: string
+          format: date-time
+          example: "2026-08-23T10:00:00Z"
+        name:
+          type: string
+          example: 'Princess Mononoke'
+        originalName:
+          type: string
+          example: 'Mononoke-hime'
+        studio:
+          type: string
+          example: 'Studio Ghibli'
+        type:
+          $ref: '#/components/schemas/TitleType'
+        barcode:
+          type: string
+          example: '825553181548'
+        purchaseDetails:
+          $ref: '#/components/schemas/PurchaseDetailsResponse'
+
+    PurchaseDetailsResponse:
+      type: object
+      required:
+        - store
+        - price
+        - currency
+      properties:
+        store:
+          type: string
+          example: 'Amazon'
+        price:
+          type: number
+          format: float
+          example: 125.39
+        currency:
+          $ref: '#/components/schemas/MonetaryType'
+
+    ErrorResponse:
+      type: object
+      properties:
+        code:
+          type: string
+        title:
+          type: string
+        detail:
+          type: string
+
+    TitleType:
+      type: string
+      enum:
+        - VHS
+        - DVD
+        - BLU_RAY
+        - BLU_RAY_4K
+        - COMBO
+      example: BLU_RAY
+
+    MonetaryType:
+      type: string
+      enum:
+        - BRAZILIAN_REAL
+        - DOLLAR
+        - IENE
+      example: BRAZILIAN_REAL
