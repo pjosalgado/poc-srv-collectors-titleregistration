@@ -41,6 +41,22 @@ docker compose up -d --build        # app + MongoDB
 ./mvnw test                         # Spock specs
 ```
 
+## Docker Images
+
+Available on both Docker Hub and GitHub Packages (multi-platform: `linux/amd64`, `linux/arm64`):
+
+**Docker Hub:**
+```bash
+docker pull paulosalgado/collectors-titleregistration:latest
+docker pull paulosalgado/collectors-titleregistration:<version>
+```
+
+**GitHub Packages (ghcr.io):**
+```bash
+docker pull ghcr.io/pjosalgado/collectors-titleregistration:latest
+docker pull ghcr.io/pjosalgado/collectors-titleregistration:<version>
+```
+
 ## API Docs
 
 Open http://localhost:8081/swagger-ui.html after starting the app.
