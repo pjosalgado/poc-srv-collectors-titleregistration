@@ -8,7 +8,7 @@ import org.mapstruct.Mapper;
 @Mapper(componentModel = "spring", uses = DateMappingUtil.class)
 public interface TitleEntityMapper {
 
-    TitleEntity fromTitle(Title title);
+    TitleEntity toEntity(Title title);
 
     Title toTitle(TitleEntity titleEntity);
 

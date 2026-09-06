@@ -28,4 +28,13 @@ public class Title {
         this.titleId = UUID.randomUUID().toString();
     }
 
+    public void applyUpdates(Title updates) {
+        if (updates.name != null) this.name = updates.name;
+        if (updates.originalName != null) this.originalName = updates.originalName;
+        if (updates.studio != null) this.studio = updates.studio;
+        if (updates.type != null) this.type = updates.type;
+        if (updates.barcode != null) this.barcode = updates.barcode;
+        if (updates.purchaseDetails != null) this.purchaseDetails = updates.purchaseDetails;
+    }
+
 }

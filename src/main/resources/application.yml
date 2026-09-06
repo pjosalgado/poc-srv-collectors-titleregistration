@@ -4,6 +4,13 @@ spring:
   mongodb:
     uri: ${MONGODB_URI:mongodb://titleregistration:password@localhost:27018/titleregistration?authSource=admin}
 
+springdoc:
+  api-docs:
+    path: /api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    url: /openapi-contract.yaml
+
 server:
   port: 8081
   shutdown: graceful

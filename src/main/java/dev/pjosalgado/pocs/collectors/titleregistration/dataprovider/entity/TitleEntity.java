@@ -6,6 +6,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
 
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
 
 import java.time.LocalDateTime;
@@ -25,6 +26,8 @@ public class TitleEntity {
     private TitleType type;
     private String barcode;
     private PurchaseDetailsEntity purchaseDetails;
+
+    @CreatedDate
     private LocalDateTime createdDateTime;
 
 }

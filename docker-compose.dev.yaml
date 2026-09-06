@@ -1,17 +1,4 @@
 services:
-  app:
-    build: .
-    image: paulosalgado/collectors-titleregistration:local
-    container_name: titleregistration
-    ports:
-      - "8081:8081"
-    environment:
-      MONGODB_URI: mongodb://titleregistration:${MONGO_PASSWORD:-password}@mongo:27017/titleregistration?authSource=admin
-    depends_on:
-      - mongo
-    networks:
-      - titleregistration-network
-
   mongo:
     image: mongo:8.2.12
     container_name: mongo-titleregistration

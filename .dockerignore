@@ -1,0 +1,13 @@
+**/.git
+**/.gitignore
+**/.opencode
+**/.bmad-loop
+**/.claude
+**/.agents
+**/node_modules
+**/docker-compose*.yaml
+**/Dockerfile
+**/.env
+**/AGENTS.md
+**/*.md
+**/*.log
