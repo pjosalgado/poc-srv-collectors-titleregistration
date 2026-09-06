@@ -32,8 +32,6 @@ Layers: `entrypoint` → `core` → `dataprovider`.
 - Boundary methods: `create`/`findById`/`findAll`/`update`/`deleteById`
 - Utility classes use Lombok `@UtilityClass`
 - Constructor pattern: Lombok `@Builder`
-- HATEOAS — responses include `_links` with relative paths; use `Link` objects from OpenAPI contract
-- Request/Response wrappers — requests: `{"data": ...}`, responses: `{"data": ..., "_links": ...}`
 
 ## Running
 
