@@ -8,13 +8,18 @@ services:
       MONGO_INITDB_ROOT_USERNAME: titleregistration
       MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD:-password}
     volumes:
-      - titleregistration-mongo-data:/data/db
+      - mongo-db:/data/db
+      - mongo-configdb:/data/configdb
     networks:
-      - titleregistration-network
+      - app-network
 
 volumes:
-  titleregistration-mongo-data:
+  mongo-db:
+    name: mongo-db-titleregistration
+  mongo-configdb:
+    name: mongo-configdb-titleregistration
 
 networks:
-  titleregistration-network:
+  app-network:
+    name: titleregistration-network
     driver: bridge
