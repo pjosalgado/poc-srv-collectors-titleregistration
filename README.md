@@ -8,6 +8,7 @@ Collector's Channel Title Registration API — register and manage physical medi
 - MongoDB
 - RabbitMQ
 - OpenAPI code-generated models (springdoc)
+- AsyncAPI code-generated models (evryfs/asyncapi-generator)
 - MapStruct + Lombok
 - Spock Framework (tests)
 

@@ -3,7 +3,7 @@
 
 Collector's Channel Title Registration API.
 
-Java 21 / Spring Boot 4.1.1, MongoDB, RabbitMQ, OpenAPI code-generated models.
+Java 21 / Spring Boot 4.1.1, MongoDB, RabbitMQ, OpenAPI and AsyncAPI code-generated models.
 
 ## Architecture
 
@@ -13,7 +13,7 @@ Layers: `entrypoint` → `core` → `dataprovider`.
 
 - **entrypoint** — REST controllers, mappers, utilities (no business logic)
 - **core** — use cases, boundaries (ports), domain models (no framework deps)
-- **dataprovider** — gateway implementations; sub-packages: `db/` (entities, repositories, mappers), `messaging/` (event publishers, message DTOs)
+- **dataprovider** — gateway implementations; sub-packages: `db/` (entities, repositories, mappers), `messaging/` (event publishers)
 
 ## Key patterns
 
@@ -59,5 +59,6 @@ Run: `./mvnw test` (unit tests only). MongoDB tests require local instance on `l
 ## Pitfalls
 
 - OpenAPI codegen overwrites `openapi/**` on every build — edit `openapi-contract.yaml` only
+- AsyncAPI codegen generates models in `target/generated-sources/asyncapi/` — edit `asyncapi-contract.yaml` only
 - MapStruct processor must run after Lombok — `pom.xml` orders them explicitly
 <!-- /bmad:context -->
