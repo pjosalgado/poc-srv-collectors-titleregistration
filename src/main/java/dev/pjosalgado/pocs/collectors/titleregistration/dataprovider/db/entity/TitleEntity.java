@@ -1,4 +1,4 @@
-package dev.pjosalgado.pocs.collectors.titleregistration.dataprovider.entity;
+package dev.pjosalgado.pocs.collectors.titleregistration.dataprovider.db.entity;
 
 import dev.pjosalgado.pocs.collectors.openapi.model.TitleType;
 import lombok.Builder;

@@ -1,13 +1,13 @@
 package dev.pjosalgado.pocs.collectors.titleregistration.core.usecase
 
-import dev.pjosalgado.pocs.collectors.titleregistration.core.boundary.TitleBoundary
+import dev.pjosalgado.pocs.collectors.titleregistration.core.boundary.TitlePersistenceBoundary
 import dev.pjosalgado.pocs.collectors.titleregistration.core.model.Title
 import dev.pjosalgado.pocs.collectors.titleregistration.exceptions.model.TitleNotFoundException
 import spock.lang.Specification
 
 class UpdateTitleUseCaseSpec extends Specification {
 
-    def boundary = Mock(TitleBoundary)
+    def boundary = Mock(TitlePersistenceBoundary)
     def useCase = new UpdateTitleUseCase(boundary)
 
     def "execute updates existing title"() {

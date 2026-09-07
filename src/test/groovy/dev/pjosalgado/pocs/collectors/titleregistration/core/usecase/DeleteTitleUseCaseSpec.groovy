@@ -1,13 +1,13 @@
 package dev.pjosalgado.pocs.collectors.titleregistration.core.usecase
 
-import dev.pjosalgado.pocs.collectors.titleregistration.core.boundary.TitleBoundary
+import dev.pjosalgado.pocs.collectors.titleregistration.core.boundary.TitlePersistenceBoundary
 import dev.pjosalgado.pocs.collectors.titleregistration.core.model.Title
 import dev.pjosalgado.pocs.collectors.titleregistration.exceptions.model.TitleNotFoundException
 import spock.lang.Specification
 
 class DeleteTitleUseCaseSpec extends Specification {
 
-    def boundary = Mock(TitleBoundary)
+    def boundary = Mock(TitlePersistenceBoundary)
     def useCase = new DeleteTitleUseCase(boundary)
 
     def "execute deletes title when found"() {

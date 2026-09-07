@@ -3,7 +3,7 @@
 
 Collector's Channel Title Registration API.
 
-Java 21 / Spring Boot 4.1.1, MongoDB, OpenAPI code-generated models.
+Java 21 / Spring Boot 4.1.1, MongoDB, RabbitMQ, OpenAPI code-generated models.
 
 ## Architecture
 
@@ -13,7 +13,7 @@ Layers: `entrypoint` → `core` → `dataprovider`.
 
 - **entrypoint** — REST controllers, mappers, utilities (no business logic)
 - **core** — use cases, boundaries (ports), domain models (no framework deps)
-- **dataprovider** — gateway implementations, entities, repository mappers
+- **dataprovider** — gateway implementations; sub-packages: `db/` (entities, repositories, mappers), `messaging/` (event publishers, message DTOs)
 
 ## Key patterns
 
@@ -24,12 +24,15 @@ Layers: `entrypoint` → `core` → `dataprovider`.
 - **Request/Response wrappers** — requests: `{"data": ...}`, responses: `{"data": ..., "_links": ...}`
 - **HATEOAS** — responses include `_links` with relative paths
 - **Error responses** — `{"errors": [{"code": "...", "title": "...", "detail": "..."}]}`
+- **Async events** — use cases publish to RabbitMQ via boundary interfaces after persist (e.g. `title.enrichment` queue)
 
 ## Conventions
 
-- Core must not import Spring, MongoDB, or OpenAPI annotations
+- **Core must not import Spring, MongoDB, or dataprovider packages** — use cases depend only on boundary (port) interfaces; dataprovider implements them
+- **Dependency inversion** — `core/boundary/` defines outbound ports (e.g. `TitlePersistenceBoundary`, `TitleEventsBoundary`); `dataprovider/` provides the adapters
 - Controller builds domain models from requests — use cases never see OpenAPI types
-- Boundary methods: `create`/`findById`/`findAll`/`update`/`deleteById`
+- Boundary methods: `create`/`findById`/`findAll`/`update`/`deleteById` (persistence), `publishTitleEnrichment` (events)
+- Externalized config via `@ConfigurationProperties` classes in `config.properties` package
 - Utility classes use Lombok `@UtilityClass`
 - Constructor pattern: Lombok `@Builder`
 
@@ -38,7 +41,7 @@ Layers: `entrypoint` → `core` → `dataprovider`.
 ```bash
 ./mvnw spring-boot:run          # port 8081
 ./mvnw test                     # Spock specs
-docker compose up -d --build    # app + MongoDB
+docker compose up -d --build    # app + MongoDB + RabbitMQ
 ```
 
 ## Testing
@@ -50,7 +53,7 @@ All tests use **Spock Framework** (Groovy) in `src/test/groovy/`.
 - **Contract** — validate request/response shapes against OpenAPI contract.
 - **Component** — full-stack entrypoint → core → dataprovider.
 
-Run: `./mvnw test` (unit tests only). MongoDB tests require local instance on `localhost:27018`.
+Run: `./mvnw test` (unit tests only). MongoDB tests require local instance on `localhost:27017`.
 
 ## Pitfalls
 

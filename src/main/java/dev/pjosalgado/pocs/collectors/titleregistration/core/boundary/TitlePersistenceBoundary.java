@@ -6,7 +6,7 @@ import org.springframework.data.domain.Pageable;
 
 import java.util.Optional;
 
-public interface TitleBoundary {
+public interface TitlePersistenceBoundary {
 
     Title create(Title title);
 

@@ -1,9 +1,9 @@
-package dev.pjosalgado.pocs.collectors.titleregistration.dataprovider.gateway;
+package dev.pjosalgado.pocs.collectors.titleregistration.dataprovider.db;
 
-import dev.pjosalgado.pocs.collectors.titleregistration.core.boundary.TitleBoundary;
+import dev.pjosalgado.pocs.collectors.titleregistration.core.boundary.TitlePersistenceBoundary;
 import dev.pjosalgado.pocs.collectors.titleregistration.core.model.Title;
-import dev.pjosalgado.pocs.collectors.titleregistration.dataprovider.mapper.TitleEntityMapper;
-import dev.pjosalgado.pocs.collectors.titleregistration.dataprovider.repository.TitleMongoRepository;
+import dev.pjosalgado.pocs.collectors.titleregistration.dataprovider.db.mapper.TitleEntityMapper;
+import dev.pjosalgado.pocs.collectors.titleregistration.dataprovider.db.repository.TitleMongoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -13,7 +13,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class TitleGateway implements TitleBoundary {
+public class TitlePersistenceGateway implements TitlePersistenceBoundary {
 
     private final TitleEntityMapper titleEntityMapper;
     private final TitleMongoRepository titleMongoRepository;

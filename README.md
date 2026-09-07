@@ -6,6 +6,7 @@ Collector's Channel Title Registration API — register and manage physical medi
 
 - Java 21 / Spring Boot 4.1.1
 - MongoDB
+- RabbitMQ
 - OpenAPI code-generated models (springdoc)
 - MapStruct + Lombok
 - Spock Framework (tests)
@@ -16,7 +17,7 @@ Clean Architecture with SOLID and CQRS principles.
 
 - **entrypoint** — REST controllers, mappers, utilities
 - **core** — use cases, boundaries (ports), domain models
-- **dataprovider** — gateway implementations, entities, repository mappers
+- **dataprovider** — gateway implementations (`db/`, `messaging/`)
 
 ## API Endpoints
 
@@ -32,7 +33,7 @@ Clean Architecture with SOLID and CQRS principles.
 
 ```bash
 ./mvnw spring-boot:run              # port 8081
-docker compose up -d --build        # app + MongoDB
+docker compose up -d --build        # app + MongoDB + RabbitMQ
 ```
 
 ## Testing
@@ -60,3 +61,7 @@ docker pull ghcr.io/pjosalgado/collectors-titleregistration:<version>
 ## API Docs
 
 Open http://localhost:8081/swagger-ui.html after starting the app.
+
+## RabbitMQ
+
+Management UI at http://localhost:15672.

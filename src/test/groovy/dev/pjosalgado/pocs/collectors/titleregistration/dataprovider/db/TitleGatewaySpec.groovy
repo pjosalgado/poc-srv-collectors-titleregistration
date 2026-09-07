@@ -1,4 +1,4 @@
-package dev.pjosalgado.pocs.collectors.titleregistration.dataprovider.gateway
+package dev.pjosalgado.pocs.collectors.titleregistration.dataprovider.db
 
 import dev.pjosalgado.pocs.collectors.titleregistration.core.model.Title
 import dev.pjosalgado.pocs.collectors.openapi.model.TitleType
@@ -14,7 +14,7 @@ import spock.lang.Ignore
 class TitleGatewaySpec extends Specification {
 
     @Autowired
-    TitleGateway titleGateway
+    TitlePersistenceGateway titleGateway
 
     def "create and findById"() {
         given:

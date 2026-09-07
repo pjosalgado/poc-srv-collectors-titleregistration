@@ -7,8 +7,13 @@ services:
       - "8081:8081"
     environment:
       MONGODB_URI: mongodb://titleregistration:${MONGO_PASSWORD:-password}@mongo:27017/titleregistration?authSource=admin
+      RABBITMQ_HOST: rabbitmq
+      RABBITMQ_PORT: 5672
+      RABBITMQ_USERNAME: titleregistration
+      RABBITMQ_PASSWORD: ${RABBITMQ_PASSWORD:-password}
     depends_on:
       - mongo
+      - rabbitmq
     networks:
       - app-network
 
@@ -26,11 +31,27 @@ services:
     networks:
       - app-network
 
+  rabbitmq:
+    image: rabbitmq:4.1-management-alpine
+    container_name: rabbitmq-titleregistration
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: titleregistration
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_PASSWORD:-password}
+    volumes:
+      - rabbitmq-data:/var/lib/rabbitmq
+    networks:
+      - app-network
+
 volumes:
   mongo-db:
     name: mongo-db-titleregistration
   mongo-configdb:
     name: mongo-configdb-titleregistration
+  rabbitmq-data:
+    name: rabbitmq-data-titleregistration
 
 networks:
   app-network:

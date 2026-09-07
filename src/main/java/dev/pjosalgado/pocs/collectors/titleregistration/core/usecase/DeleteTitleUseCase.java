@@ -1,6 +1,6 @@
 package dev.pjosalgado.pocs.collectors.titleregistration.core.usecase;
 
-import dev.pjosalgado.pocs.collectors.titleregistration.core.boundary.TitleBoundary;
+import dev.pjosalgado.pocs.collectors.titleregistration.core.boundary.TitlePersistenceBoundary;
 import dev.pjosalgado.pocs.collectors.titleregistration.exceptions.model.TitleNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -9,13 +9,13 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class DeleteTitleUseCase {
 
-    private final TitleBoundary titleBoundary;
+    private final TitlePersistenceBoundary titlePersistenceBoundary;
 
     public void execute(String titleId) {
-        if (titleBoundary.findById(titleId).isEmpty()) {
+        if (titlePersistenceBoundary.findById(titleId).isEmpty()) {
             throw new TitleNotFoundException(titleId);
         }
-        titleBoundary.deleteById(titleId);
+        titlePersistenceBoundary.deleteById(titleId);
     }
 
 }
