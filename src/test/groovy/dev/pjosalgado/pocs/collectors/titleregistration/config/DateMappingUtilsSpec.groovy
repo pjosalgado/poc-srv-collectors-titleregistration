@@ -1,5 +1,6 @@
 package dev.pjosalgado.pocs.collectors.titleregistration.config
 
+import dev.pjosalgado.pocs.collectors.titleregistration.entrypoint.rest.util.DateMappingUtils
 import spock.lang.Specification
 import spock.lang.Unroll
 
@@ -7,12 +8,12 @@ import java.time.LocalDateTime
 import java.time.OffsetDateTime
 import java.time.ZoneOffset
 
-class DateMappingUtilSpec extends Specification {
+class DateMappingUtilsSpec extends Specification {
 
     @Unroll
     def "toOffsetDateTime converts #input to UTC offset"() {
         expect:
-        DateMappingUtil.toOffsetDateTime(input) == expected
+        DateMappingUtils.toOffsetDateTime(input) == expected
 
         where:
         input                                    || expected
@@ -23,6 +24,6 @@ class DateMappingUtilSpec extends Specification {
 
     def "toOffsetDateTime returns null for null input"() {
         expect:
-        DateMappingUtil.toOffsetDateTime(null) == null
+        DateMappingUtils.toOffsetDateTime(null) == null
     }
 }

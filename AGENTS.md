@@ -30,6 +30,7 @@ Layers: `entrypoint` → `core` → `dataprovider`.
 
 - **Core must not import Spring, MongoDB, or dataprovider packages** — use cases depend only on boundary (port) interfaces; dataprovider implements them
 - **Dependency inversion** — `core/boundary/` defines outbound ports (e.g. `TitlePersistenceBoundary`, `TitleEventsBoundary`); `dataprovider/` provides the adapters
+- **Tiny parameters** — avoid more than one parameter per method; especially native Java types. Wrap parameters in records (e.g. `TitleEnrichmentRequest`, `TitleUpdateContext`, `PageLinksContext`)
 - Controller builds domain models from requests — use cases never see OpenAPI types
 - Boundary methods: `create`/`findById`/`findAll`/`update`/`deleteById` (persistence), `publishTitleEnrichment` (events)
 - Externalized config via `@ConfigurationProperties` classes in `config.properties` package

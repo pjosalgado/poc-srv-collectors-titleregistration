@@ -1,6 +1,6 @@
-package dev.pjosalgado.pocs.collectors.titleregistration.exceptions.handler
+package dev.pjosalgado.pocs.collectors.titleregistration.exception.handler
 
-import dev.pjosalgado.pocs.collectors.titleregistration.exceptions.model.TitleNotFoundException
+import dev.pjosalgado.pocs.collectors.titleregistration.exception.model.TitleNotFoundException
 import spock.lang.Specification
 
 class TitleExceptionHandlerSpec extends Specification {

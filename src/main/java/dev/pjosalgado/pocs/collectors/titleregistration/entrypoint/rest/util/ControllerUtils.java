@@ -1,4 +1,4 @@
-package dev.pjosalgado.pocs.collectors.titleregistration.entrypoint.rest;
+package dev.pjosalgado.pocs.collectors.titleregistration.entrypoint.rest.util;
 
 import dev.pjosalgado.pocs.collectors.openapi.model.Link;
 import dev.pjosalgado.pocs.collectors.openapi.model.PaginationResponse;
@@ -6,6 +6,8 @@ import dev.pjosalgado.pocs.collectors.openapi.model.TitleDataWrapper;
 import dev.pjosalgado.pocs.collectors.titleregistration.core.model.PurchaseDetails;
 import dev.pjosalgado.pocs.collectors.titleregistration.core.model.Title;
 import dev.pjosalgado.pocs.collectors.titleregistration.entrypoint.rest.mapper.TitleResponseMapper;
+import dev.pjosalgado.pocs.collectors.titleregistration.entrypoint.rest.record.PageLinksContext;
+import dev.pjosalgado.pocs.collectors.titleregistration.entrypoint.rest.record.TitleUpdateContext;
 import lombok.experimental.UtilityClass;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -13,10 +15,9 @@ import org.springframework.data.domain.Pageable;
 
 import java.math.BigDecimal;
 import java.util.HashMap;
-import java.util.Map;
 
 @UtilityClass
-public class TitleResourceUtil {
+public class ControllerUtils {
 
     public static final int DEFAULT_PAGE_SIZE = 10;
     private static final String BASE_PATH = "/registration/v1/titles";
@@ -35,14 +36,7 @@ public class TitleResourceUtil {
         );
     }
 
-    public static Map<String, Link> buildSingleTitleLinks(String titleId) {
-        var links = new HashMap<String, Link>();
-        links.put("self", buildLink(BASE_PATH + "/" + titleId));
-        links.put("collection", buildLink(BASE_PATH));
-        return links;
-    }
-
-    public static Map<String, Link> buildPageLinks(int currentPage, int pageSize, int totalPages) {
+    public static PageLinksContext buildPageLinks(int currentPage, int pageSize, int totalPages) {
         var links = new HashMap<String, Link>();
         links.put("self", buildLink(buildPagePath(currentPage, pageSize)));
 
@@ -59,7 +53,7 @@ public class TitleResourceUtil {
             links.put("last", buildLink(buildPagePath(totalPages - 1, pageSize)));
         }
 
-        return links;
+        return new PageLinksContext(currentPage, pageSize, totalPages, links);
     }
 
     public static PaginationResponse buildPagination(Page<?> page) {
@@ -71,8 +65,8 @@ public class TitleResourceUtil {
         return pagination;
     }
 
-    public static Title buildTitleFromUpdateRequest(String titleId,
-                                                    dev.pjosalgado.pocs.collectors.openapi.model.TitleUpdateRequest request) {
+    public static Title buildTitleFromUpdateRequest(TitleUpdateContext context) {
+        var request = context.updates();
         PurchaseDetails purchaseDetails = null;
         if (request.getPurchaseDetails() != null) {
             var pd = request.getPurchaseDetails();
@@ -83,7 +77,7 @@ public class TitleResourceUtil {
                     .build();
         }
         return Title.builder()
-                .titleId(titleId)
+                .titleId(context.titleId())
                 .name(request.getName())
                 .originalName(request.getOriginalName())
                 .studio(request.getStudio())
@@ -91,6 +85,18 @@ public class TitleResourceUtil {
                 .barcode(request.getBarcode())
                 .purchaseDetails(purchaseDetails)
                 .build();
+    }
+
+    public static Title buildTitleFromUpdateRequest(String titleId,
+                                                    dev.pjosalgado.pocs.collectors.openapi.model.TitleUpdateRequest request) {
+        return buildTitleFromUpdateRequest(new TitleUpdateContext(titleId, request));
+    }
+
+    private static HashMap<String, Link> buildSingleTitleLinks(String titleId) {
+        var links = new HashMap<String, Link>();
+        links.put("self", buildLink(BASE_PATH + "/" + titleId));
+        links.put("collection", buildLink(BASE_PATH));
+        return links;
     }
 
     private static String buildPagePath(int page, int pageSize) {

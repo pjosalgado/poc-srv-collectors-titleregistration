@@ -12,6 +12,7 @@ import dev.pjosalgado.pocs.collectors.titleregistration.core.usecase.FindTitleBy
 import dev.pjosalgado.pocs.collectors.titleregistration.core.usecase.UpdateTitleUseCase;
 import dev.pjosalgado.pocs.collectors.titleregistration.entrypoint.rest.mapper.TitleRequestMapper;
 import dev.pjosalgado.pocs.collectors.titleregistration.entrypoint.rest.mapper.TitleResponseMapper;
+import dev.pjosalgado.pocs.collectors.titleregistration.entrypoint.rest.record.TitleUpdateContext;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,11 +20,11 @@ import org.springframework.stereotype.Service;
 
 import java.util.stream.Collectors;
 
-import static dev.pjosalgado.pocs.collectors.titleregistration.entrypoint.rest.TitleResourceUtil.buildPageLinks;
-import static dev.pjosalgado.pocs.collectors.titleregistration.entrypoint.rest.TitleResourceUtil.buildPageable;
-import static dev.pjosalgado.pocs.collectors.titleregistration.entrypoint.rest.TitleResourceUtil.buildPagination;
-import static dev.pjosalgado.pocs.collectors.titleregistration.entrypoint.rest.TitleResourceUtil.buildTitleFromUpdateRequest;
-import static dev.pjosalgado.pocs.collectors.titleregistration.entrypoint.rest.TitleResourceUtil.buildTitleResponse;
+import static dev.pjosalgado.pocs.collectors.titleregistration.entrypoint.rest.util.ControllerUtils.buildPageLinks;
+import static dev.pjosalgado.pocs.collectors.titleregistration.entrypoint.rest.util.ControllerUtils.buildPageable;
+import static dev.pjosalgado.pocs.collectors.titleregistration.entrypoint.rest.util.ControllerUtils.buildPagination;
+import static dev.pjosalgado.pocs.collectors.titleregistration.entrypoint.rest.util.ControllerUtils.buildTitleFromUpdateRequest;
+import static dev.pjosalgado.pocs.collectors.titleregistration.entrypoint.rest.util.ControllerUtils.buildTitleResponse;
 
 @Service
 @RequiredArgsConstructor
@@ -54,7 +55,7 @@ public class TitleRegistrationController implements RegistrationApiDelegate {
                 .map(titleResponseMapper::fromTitle)
                 .collect(Collectors.toList()));
         response.setPagination(buildPagination(result));
-        response.setLinks(buildPageLinks(result.getNumber(), result.getSize(), result.getTotalPages()));
+        response.setLinks(buildPageLinks(result.getNumber(), result.getSize(), result.getTotalPages()).links());
         return ResponseEntity.ok(response);
     }
 
@@ -66,8 +67,8 @@ public class TitleRegistrationController implements RegistrationApiDelegate {
 
     @Override
     public ResponseEntity<TitleDataWrapper> titleUpdate(String titleId, TitleUpdateWrapper wrapper) {
-        var title = buildTitleFromUpdateRequest(titleId, wrapper.getData());
-        var updated = updateTitleUseCase.execute(titleId, title);
+        var title = buildTitleFromUpdateRequest(new TitleUpdateContext(titleId, wrapper.getData()));
+        var updated = updateTitleUseCase.execute(title);
         return ResponseEntity.ok(buildTitleResponse(updated, titleResponseMapper));
     }
 

@@ -1,4 +1,4 @@
-package dev.pjosalgado.pocs.collectors.titleregistration.config;
+package dev.pjosalgado.pocs.collectors.titleregistration.entrypoint.rest.util;
 
 import lombok.experimental.UtilityClass;
 
@@ -7,7 +7,7 @@ import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 
 @UtilityClass
-public class DateMappingUtil {
+public class DateMappingUtils {
 
     public static OffsetDateTime toOffsetDateTime(LocalDateTime localDateTime) {
         return localDateTime == null

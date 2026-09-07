@@ -13,14 +13,17 @@
 
     <groupId>dev.pjosalgado.pocs</groupId>
     <artifactId>poc-srv-collectors-titleregistration</artifactId>
-    <version>1.0.0</version>
+    <version>1.1.0</version>
     <name>poc-srv-collectors-titleregistration</name>
     <description>poc-srv-collectors-titleregistration</description>
 
-    <url/>
+    <url>https://github.com/pjosalgado/poc-srv-collectors-titleregistration</url>
 
     <licenses>
-        <license/>
+        <license>
+            <name>MIT License</name>
+            <url>https://opensource.org/licenses/MIT</url>
+        </license>
     </licenses>
 
     <developers>
@@ -32,10 +35,10 @@
     </developers>
 
     <scm>
-        <connection/>
-        <developerConnection/>
-        <tag/>
-        <url/>
+        <connection>scm:git:https://github.com/pjosalgado/poc-srv-collectors-titleregistration.git</connection>
+        <developerConnection>scm:git:ssh://git@github.com/pjosalgado/poc-srv-collectors-titleregistration.git</developerConnection>
+        <tag>HEAD</tag>
+        <url>https://github.com/pjosalgado/poc-srv-collectors-titleregistration</url>
     </scm>
 
     <properties>

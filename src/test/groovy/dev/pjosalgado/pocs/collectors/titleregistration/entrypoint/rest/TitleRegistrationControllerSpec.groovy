@@ -137,7 +137,7 @@ class TitleRegistrationControllerSpec extends Specification {
         def result = controller.titleUpdate("id-1", wrapper)
 
         then:
-        1 * updateUseCase.execute("id-1", { it.name == "Updated" }) >> updatedTitle
+        1 * updateUseCase.execute({ it.titleId == "id-1" && it.name == "Updated" }) >> updatedTitle
         1 * responseMapper.fromTitle(updatedTitle) >> responseData
         result.getStatusCode().value() == 200
         result.getBody().getData() == responseData

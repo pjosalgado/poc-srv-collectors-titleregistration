@@ -12,6 +12,9 @@ spring:
 app:
   queue:
     title-enrichment: title.enrichment
+  messaging:
+    consumer:
+      enabled: true
 
 springdoc:
   api-docs:

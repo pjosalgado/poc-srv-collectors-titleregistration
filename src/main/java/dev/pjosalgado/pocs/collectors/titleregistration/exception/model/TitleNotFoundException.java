@@ -1,4 +1,4 @@
-package dev.pjosalgado.pocs.collectors.titleregistration.exceptions.model;
+package dev.pjosalgado.pocs.collectors.titleregistration.exception.model;
 
 public class TitleNotFoundException extends RuntimeException {
 

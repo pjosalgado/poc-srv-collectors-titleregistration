@@ -19,6 +19,10 @@ Clean Architecture with SOLID and CQRS principles.
 - **core** — use cases, boundaries (ports), domain models
 - **dataprovider** — gateway implementations (`db/`, `messaging/`)
 
+### Design Patterns
+
+- **Tiny Parameters** — avoid more than one parameter per method; wrap in records
+
 ## API Endpoints
 
 | Method   | Path                           | Description              |

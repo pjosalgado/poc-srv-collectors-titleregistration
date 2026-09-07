@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class TitleEventsGateway implements TitleEventsBoundary {
+public class TitleEventsProducer implements TitleEventsBoundary {
 
     private final RabbitTemplate rabbitTemplate;
     private final AppQueueProperties appQueueProperties;
