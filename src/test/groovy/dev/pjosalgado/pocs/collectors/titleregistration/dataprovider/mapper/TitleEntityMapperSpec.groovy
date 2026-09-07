@@ -4,8 +4,9 @@ import dev.pjosalgado.pocs.collectors.openapi.model.MonetaryType
 import dev.pjosalgado.pocs.collectors.openapi.model.TitleType
 import dev.pjosalgado.pocs.collectors.titleregistration.core.model.PurchaseDetails
 import dev.pjosalgado.pocs.collectors.titleregistration.core.model.Title
-import dev.pjosalgado.pocs.collectors.titleregistration.dataprovider.entity.PurchaseDetailsEntity
-import dev.pjosalgado.pocs.collectors.titleregistration.dataprovider.entity.TitleEntity
+import dev.pjosalgado.pocs.collectors.titleregistration.dataprovider.db.entity.PurchaseDetailsEntity
+import dev.pjosalgado.pocs.collectors.titleregistration.dataprovider.db.entity.TitleEntity
+import dev.pjosalgado.pocs.collectors.titleregistration.dataprovider.db.mapper.TitleEntityMapper
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import spock.lang.Specification

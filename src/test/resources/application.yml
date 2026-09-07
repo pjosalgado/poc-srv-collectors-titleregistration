@@ -1,0 +1,3 @@
+app:
+  queue:
+    title-enrichment: title.enrichment

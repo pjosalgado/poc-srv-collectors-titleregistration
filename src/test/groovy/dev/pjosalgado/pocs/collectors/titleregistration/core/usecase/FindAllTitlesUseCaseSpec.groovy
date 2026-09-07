@@ -1,6 +1,6 @@
 package dev.pjosalgado.pocs.collectors.titleregistration.core.usecase
 
-import dev.pjosalgado.pocs.collectors.titleregistration.core.boundary.TitleBoundary
+import dev.pjosalgado.pocs.collectors.titleregistration.core.boundary.TitlePersistenceBoundary
 import dev.pjosalgado.pocs.collectors.titleregistration.core.model.Title
 import org.springframework.data.domain.PageImpl
 import org.springframework.data.domain.PageRequest
@@ -8,7 +8,7 @@ import spock.lang.Specification
 
 class FindAllTitlesUseCaseSpec extends Specification {
 
-    def titleBoundary = Mock(TitleBoundary)
+    def titleBoundary = Mock(TitlePersistenceBoundary)
     def useCase = new FindAllTitlesUseCase(titleBoundary)
 
     def "execute returns paginated titles"() {

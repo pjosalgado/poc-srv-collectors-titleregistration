@@ -8,19 +8,22 @@
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>4.1.1</version>
-        <relativePath/> <!-- lookup parent from repository -->
+        <relativePath/>
     </parent>
 
     <groupId>dev.pjosalgado.pocs</groupId>
     <artifactId>poc-srv-collectors-titleregistration</artifactId>
-    <version>1.0.0</version>
+    <version>1.1.0</version>
     <name>poc-srv-collectors-titleregistration</name>
-    <description>poc-srv-collectors-titleregistration</description>
+    <description>Collector's Channel Title Registration API — register and manage physical media titles</description>
 
-    <url/>
+    <url>https://github.com/pjosalgado/poc-srv-collectors-titleregistration</url>
 
     <licenses>
-        <license/>
+        <license>
+            <name>MIT License</name>
+            <url>https://opensource.org/licenses/MIT</url>
+        </license>
     </licenses>
 
     <developers>
@@ -32,14 +35,16 @@
     </developers>
 
     <scm>
-        <connection/>
-        <developerConnection/>
-        <tag/>
-        <url/>
+        <connection>scm:git:https://github.com/pjosalgado/poc-srv-collectors-titleregistration.git</connection>
+        <developerConnection>scm:git:ssh://git@github.com/pjosalgado/poc-srv-collectors-titleregistration.git</developerConnection>
+        <tag>HEAD</tag>
+        <url>https://github.com/pjosalgado/poc-srv-collectors-titleregistration</url>
     </scm>
 
     <properties>
         <java.version>21</java.version>
+        <build-helper-maven-plugin.version>3.6.0</build-helper-maven-plugin.version>
+        <gmavenplus-plugin.version>4.1.1</gmavenplus-plugin.version>
         <springdoc-openapi-starter-webmvc-ui.version>3.1.0</springdoc-openapi-starter-webmvc-ui.version>
         <swagger-annotations.version>2.2.53</swagger-annotations.version>
         <jackson-databind-nullable.version>0.2.11</jackson-databind-nullable.version>
@@ -47,6 +52,7 @@
         <lombok.version>1.18.46</lombok.version>
         <lombok-mapstruct-binding.version>0.2.0</lombok-mapstruct-binding.version>
         <openapi-generator-maven-plugin.version>7.24.0</openapi-generator-maven-plugin.version>
+        <asyncapi-generator-maven-plugin.version>0.3.4-BETA</asyncapi-generator-maven-plugin.version>
         <spock.version>2.4-groovy-4.0</spock.version>
         <groovy.version>4.0.24</groovy.version>
         <commons-compress.version>1.28.0</commons-compress.version>
@@ -89,6 +95,10 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-mongodb</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-amqp</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -240,7 +250,6 @@
                                 <delegatePattern>true</delegatePattern>
                                 <serializableModel>true</serializableModel>
                                 <useTags>true</useTags>
-                                <!--suppress UnresolvedMavenProperty -->
                                 <additionalModelTypeAnnotations>
                                     @lombok.Data
                                     @lombok.Builder
@@ -254,13 +263,54 @@
                 </executions>
             </plugin>
             <plugin>
+                <groupId>dev.banking.asyncapi.generator</groupId>
+                <artifactId>asyncapi-generator-maven-plugin</artifactId>
+                <version>${asyncapi-generator-maven-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <id>generate-asyncapi-models</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <inputSpec>
+                                ${project.basedir}/src/main/resources/static/asyncapi-contract.yaml
+                            </inputSpec>
+                            <generatorName>java</generatorName>
+                            <modelPackage>${project.groupId}.collectors.asyncapi.model</modelPackage>
+                            <modelConfig>
+                                <modelType>java-record</modelType>
+                            </modelConfig>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <version>${build-helper-maven-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <id>add-asyncapi-sources</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>add-source</goal>
+                        </goals>
+                        <configuration>
+                            <sources>
+                                <source>${project.build.directory}/generated-sources/asyncapi</source>
+                            </sources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <configuration>
                     <includes>
-                        <include>**/*Spec.java</include>
                         <include>**/*Spec.groovy</include>
-                        <include>**/*Test.java</include>
                         <include>**/*Test.groovy</include>
                     </includes>
                 </configuration>
@@ -268,7 +318,7 @@
             <plugin>
                 <groupId>org.codehaus.gmavenplus</groupId>
                 <artifactId>gmavenplus-plugin</artifactId>
-                <version>4.1.1</version>
+                <version>${gmavenplus-plugin.version}</version>
                 <executions>
                     <execution>
                         <goals>

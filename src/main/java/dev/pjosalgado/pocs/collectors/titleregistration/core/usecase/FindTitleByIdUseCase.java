@@ -1,7 +1,7 @@
 package dev.pjosalgado.pocs.collectors.titleregistration.core.usecase;
 
-import dev.pjosalgado.pocs.collectors.titleregistration.core.boundary.TitleBoundary;
-import dev.pjosalgado.pocs.collectors.titleregistration.exceptions.model.TitleNotFoundException;
+import dev.pjosalgado.pocs.collectors.titleregistration.core.boundary.TitlePersistenceBoundary;
+import dev.pjosalgado.pocs.collectors.titleregistration.exception.model.TitleNotFoundException;
 import dev.pjosalgado.pocs.collectors.titleregistration.core.model.Title;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -10,10 +10,10 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class FindTitleByIdUseCase {
 
-    private final TitleBoundary titleBoundary;
+    private final TitlePersistenceBoundary titlePersistenceBoundary;
 
     public Title execute(String titleId) {
-        return titleBoundary.findById(titleId)
+        return titlePersistenceBoundary.findById(titleId)
                 .orElseThrow(() -> new TitleNotFoundException(titleId));
     }
 

@@ -6,9 +6,19 @@ services:
     ports:
       - "8081:8081"
     environment:
-      MONGODB_URI: mongodb://titleregistration:${MONGO_PASSWORD:-password}@mongo:27017/titleregistration?authSource=admin
+      MONGODB_URI: ${MONGODB_URI:mongodb://titleregistration:password@localhost:27017/titleregistration?authSource=admin}
+      RABBITMQ_HOST: rabbitmq
+      RABBITMQ_PORT: 5672
+      RABBITMQ_USERNAME: titleregistration
+      RABBITMQ_PASSWORD: ${RABBITMQ_PASSWORD:-password}
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      REDIS_PASSWORD: ${REDIS_PASSWORD:-password}
+      OMDB_API_KEY: ${OMDB_API_KEY:-}
     depends_on:
       - mongo
+      - rabbitmq
+      - redis
     networks:
       - app-network
 
@@ -26,11 +36,40 @@ services:
     networks:
       - app-network
 
+  rabbitmq:
+    image: rabbitmq:4.1-management-alpine
+    container_name: rabbitmq-titleregistration
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: titleregistration
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_PASSWORD:-password}
+    volumes:
+      - rabbitmq-data:/var/lib/rabbitmq
+    networks:
+      - app-network
+
+  redis:
+    image: redis:7-alpine
+    container_name: redis-titleregistration
+    ports:
+      - "6379:6379"
+    command: redis-server --requirepass ${REDIS_PASSWORD:-password}
+    volumes:
+      - redis-data:/data
+    networks:
+      - app-network
+
 volumes:
   mongo-db:
     name: mongo-db-titleregistration
   mongo-configdb:
     name: mongo-configdb-titleregistration
+  rabbitmq-data:
+    name: rabbitmq-data-titleregistration
+  redis-data:
+    name: redis-data-titleregistration
 
 networks:
   app-network:

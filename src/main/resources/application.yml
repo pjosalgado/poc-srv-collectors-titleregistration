@@ -1,8 +1,36 @@
+server:
+  port: 8081
+  shutdown: graceful
+
 spring:
   application:
     name: poc-srv-collectors-titleregistration
   mongodb:
     uri: ${MONGODB_URI:mongodb://titleregistration:password@localhost:27017/titleregistration?authSource=admin}
+  rabbitmq:
+    host: ${RABBITMQ_HOST:localhost}
+    port: ${RABBITMQ_PORT:5672}
+    username: ${RABBITMQ_USERNAME:titleregistration}
+    password: ${RABBITMQ_PASSWORD:password}
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+      password: ${REDIS_PASSWORD:password}
+
+app:
+  queue:
+    title-enrichment: title.enrichment
+    dlq-suffix: .dlq
+  messaging:
+    consumer:
+      enabled: true
+  omdb:
+    api-key: ${OMDB_API_KEY:}
+    base-url: https://www.omdbapi.com
+  cache:
+    title-enrichment:
+      ttl: 10s
 
 springdoc:
   api-docs:
@@ -10,7 +38,3 @@ springdoc:
   swagger-ui:
     path: /swagger-ui.html
     url: /openapi-contract.yaml
-
-server:
-  port: 8081
-  shutdown: graceful

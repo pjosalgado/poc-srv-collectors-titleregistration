@@ -6,6 +6,7 @@ import dev.pjosalgado.pocs.collectors.openapi.model.TitleUpdateRequest
 import dev.pjosalgado.pocs.collectors.openapi.model.TitleUpdateWrapper
 import dev.pjosalgado.pocs.collectors.openapi.model.TitleCreatedResponse
 import dev.pjosalgado.pocs.collectors.openapi.model.TitleDataWrapper
+import dev.pjosalgado.pocs.collectors.openapi.model.TitleListItemResponse
 import dev.pjosalgado.pocs.collectors.openapi.model.TitleType
 import dev.pjosalgado.pocs.collectors.titleregistration.core.model.Title
 import dev.pjosalgado.pocs.collectors.titleregistration.core.usecase.CreateTitleUseCase
@@ -13,6 +14,7 @@ import dev.pjosalgado.pocs.collectors.titleregistration.core.usecase.DeleteTitle
 import dev.pjosalgado.pocs.collectors.titleregistration.core.usecase.FindAllTitlesUseCase
 import dev.pjosalgado.pocs.collectors.titleregistration.core.usecase.FindTitleByIdUseCase
 import dev.pjosalgado.pocs.collectors.titleregistration.core.usecase.UpdateTitleUseCase
+import dev.pjosalgado.pocs.collectors.titleregistration.entrypoint.rest.mapper.TitleListItemMapper
 import dev.pjosalgado.pocs.collectors.titleregistration.entrypoint.rest.mapper.TitleRequestMapper
 import dev.pjosalgado.pocs.collectors.titleregistration.entrypoint.rest.mapper.TitleResponseMapper
 import org.springframework.data.domain.PageImpl
@@ -28,10 +30,11 @@ class TitleRegistrationControllerSpec extends Specification {
     def deleteUseCase = Mock(DeleteTitleUseCase)
     def requestMapper = Mock(TitleRequestMapper)
     def responseMapper = Mock(TitleResponseMapper)
+    def listItemMapper = Mock(TitleListItemMapper)
 
     def controller = new TitleRegistrationController(
             createUseCase, findUseCase, findAllUseCase, updateUseCase, deleteUseCase,
-            requestMapper, responseMapper
+            requestMapper, responseMapper, listItemMapper
     )
 
     def "titleCreate returns 201 with created title and links"() {
@@ -59,8 +62,8 @@ class TitleRegistrationControllerSpec extends Specification {
         given:
         def title1 = Title.builder().titleId("id-1").name("Title 1").build()
         def title2 = Title.builder().titleId("id-2").name("Title 2").build()
-        def responseData1 = new TitleCreatedResponse(name: "Title 1")
-        def responseData2 = new TitleCreatedResponse(name: "Title 2")
+        def responseData1 = new TitleListItemResponse(name: "Title 1")
+        def responseData2 = new TitleListItemResponse(name: "Title 2")
         def pageable = PageRequest.of(0, 10)
         def page = new PageImpl<>([title1, title2], pageable, 2)
 
@@ -69,8 +72,8 @@ class TitleRegistrationControllerSpec extends Specification {
 
         then:
         1 * findAllUseCase.execute(pageable) >> page
-        1 * responseMapper.fromTitle(title1) >> responseData1
-        1 * responseMapper.fromTitle(title2) >> responseData2
+        1 * listItemMapper.fromTitle(title1) >> responseData1
+        1 * listItemMapper.fromTitle(title2) >> responseData2
         result.getStatusCode().value() == 200
         result.getBody().getData().size() == 2
         result.getBody().getLinks().containsKey("self")
@@ -137,7 +140,7 @@ class TitleRegistrationControllerSpec extends Specification {
         def result = controller.titleUpdate("id-1", wrapper)
 
         then:
-        1 * updateUseCase.execute("id-1", { it.name == "Updated" }) >> updatedTitle
+        1 * updateUseCase.execute({ it.titleId == "id-1" && it.name == "Updated" }) >> updatedTitle
         1 * responseMapper.fromTitle(updatedTitle) >> responseData
         result.getStatusCode().value() == 200
         result.getBody().getData() == responseData

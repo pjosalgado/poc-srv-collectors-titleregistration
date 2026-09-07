@@ -1,0 +1,85 @@
+asyncapi: 3.0.0
+
+info:
+  title: poc-srv-collectors-titleregistration
+  description: Async events for Collector's Channel Title Registration API
+  version: 1.0.0
+
+channels:
+  titleEnrichment:
+    address: title.enrichment
+    messages:
+      titleEnrichmentMessage:
+        $ref: '#/components/messages/TitleEnrichment'
+    bindings:
+      amqp:
+        queue:
+          name: title.enrichment
+          durable: true
+          autoDelete: false
+
+operations:
+  publishTitleEnrichment:
+    action: send
+    channel:
+      $ref: '#/channels/titleEnrichment'
+    summary: Published when a new title is created
+    description: Operation performed by the Title Registration producer
+    messages:
+      - $ref: '#/channels/titleEnrichment/messages/titleEnrichmentMessage'
+
+  consumeTitleEnrichment:
+    action: receive
+    channel:
+      $ref: '#/channels/titleEnrichment'
+    summary: Consumed to enrich title data
+    description: Operation performed by the Title Registration consumer
+    messages:
+      - $ref: '#/channels/titleEnrichment/messages/titleEnrichmentMessage'
+
+components:
+  messages:
+    TitleEnrichment:
+      name: TitleEnrichment
+      title: Title Enrichment Event
+      description: Event emitted after a new title is created, used for data enrichment
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/TitleEnrichmentPayload'
+      headers:
+        type: object
+        properties:
+          __TypeId__:
+            type: string
+            description: Fully qualified class name for type resolution
+            examples:
+              - dev.pjosalgado.pocs.collectors.asyncapi.model.TitleEnrichmentPayload
+
+  schemas:
+    TitleEnrichmentPayload:
+      type: object
+      description: Title enrichment event payload
+      properties:
+        titleId:
+          type: string
+          description: Unique identifier of the title
+          examples:
+            - 550e8400-e29b-41d4-a716-446655440000
+        name:
+          type: string
+          description: Display name of the title
+          examples:
+            - Princess Mononoke
+        originalName:
+          type: string
+          description: Original name of the title (in its original language)
+          examples:
+            - Mononoke-hime
+        studio:
+          type: string
+          description: Production studio
+          examples:
+            - Studio Ghibli
+      required:
+        - titleId
+        - name

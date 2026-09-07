@@ -32,6 +32,7 @@ class TitleResponseMapperSpec extends Specification {
                 .barcode("123456789")
                 .purchaseDetails(purchaseDetails)
                 .createdDateTime(LocalDateTime.of(2025, 1, 15, 10, 30))
+                .lastUpdatedDateTime(LocalDateTime.of(2025, 6, 20, 14, 45))
                 .build()
 
         when:
@@ -45,6 +46,9 @@ class TitleResponseMapperSpec extends Specification {
         response.getType() == TitleType.BLU_RAY
         response.getBarcode() == "123456789"
         response.getCreatedDateTime() != null
+        response.getCreatedDateTime().getOffset() != null
+        response.getLastUpdatedDateTime() != null
+        response.getLastUpdatedDateTime().getOffset() != null
         response.getPurchaseDetails() != null
         response.getPurchaseDetails().getStore() == "Amazon"
         response.getPurchaseDetails().getPrice() == 199.99f
@@ -71,6 +75,7 @@ class TitleResponseMapperSpec extends Specification {
         response.getBarcode() == null
         response.getPurchaseDetails() == null
         response.getCreatedDateTime() == null
+        response.getLastUpdatedDateTime() == null
     }
 
     def "fromTitle converts LocalDateTime to OffsetDateTime"() {
@@ -80,6 +85,7 @@ class TitleResponseMapperSpec extends Specification {
                 .name("Date Test")
                 .type(TitleType.DVD)
                 .createdDateTime(LocalDateTime.of(2025, 6, 15, 14, 30, 0))
+                .lastUpdatedDateTime(LocalDateTime.of(2025, 6, 20, 16, 45, 0))
                 .build()
 
         when:
@@ -88,5 +94,7 @@ class TitleResponseMapperSpec extends Specification {
         then:
         response.getCreatedDateTime() != null
         response.getCreatedDateTime().getOffset() != null
+        response.getLastUpdatedDateTime() != null
+        response.getLastUpdatedDateTime().getOffset() != null
     }
 }

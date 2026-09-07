@@ -1,0 +1,64 @@
+package dev.pjosalgado.pocs.collectors.titleregistration.core.usecase;
+
+import dev.pjosalgado.pocs.collectors.titleregistration.core.boundary.OmdbBoundary;
+import dev.pjosalgado.pocs.collectors.titleregistration.core.boundary.TitleCacheBoundary;
+import dev.pjosalgado.pocs.collectors.titleregistration.core.boundary.TitlePersistenceBoundary;
+import dev.pjosalgado.pocs.collectors.titleregistration.core.model.Title;
+import dev.pjosalgado.pocs.collectors.titleregistration.core.model.TitleEnrichmentData;
+import dev.pjosalgado.pocs.collectors.titleregistration.core.record.TitleEnrichmentRequest;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
+
+import java.util.Optional;
+
+@Slf4j
+@Service
+@RequiredArgsConstructor
+public class EnrichTitleUseCase {
+
+    private final OmdbBoundary omdbBoundary;
+    private final TitleCacheBoundary titleEnrichmentCache;
+    private final TitlePersistenceBoundary titlePersistenceBoundary;
+
+    public void execute(TitleEnrichmentRequest request) {
+        log.info("Enriching title: {} - {} / {}", request.titleId(), request.originalName(), request.name());
+
+        Optional<TitleEnrichmentData> enrichmentData = searchWithFallback(request.originalName(), request.name());
+        enrichmentData.ifPresent(data -> updateTitleWithEnrichmentData(request.titleId(), data));
+    }
+
+    private Optional<TitleEnrichmentData> searchWithFallback(String originalName, String name) {
+        Optional<TitleEnrichmentData> result = searchByName(originalName);
+        if (result.isPresent()) {
+            return result;
+        }
+
+        if (!originalName.equals(name)) {
+            return searchByName(name);
+        }
+
+        return Optional.empty();
+    }
+
+    private Optional<TitleEnrichmentData> searchByName(String name) {
+        Optional<TitleEnrichmentData> cached = titleEnrichmentCache.get(name);
+        if (cached.isPresent()) {
+            return cached;
+        }
+
+        Optional<TitleEnrichmentData> fromApi = omdbBoundary.searchByTitle(name);
+        fromApi.ifPresent(data -> titleEnrichmentCache.put(name, data));
+        return fromApi;
+    }
+
+    private void updateTitleWithEnrichmentData(String titleId, TitleEnrichmentData enrichmentData) {
+        titlePersistenceBoundary.findById(titleId)
+                .ifPresent(title -> {
+                    var updates = Title.builder().enrichmentData(enrichmentData).build();
+                    title.applyUpdates(updates);
+                    titlePersistenceBoundary.update(title);
+                });
+    }
+
+}
