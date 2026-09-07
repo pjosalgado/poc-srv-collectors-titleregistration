@@ -6,9 +6,10 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 
 @Getter
 @Setter
-@ConfigurationProperties(prefix = "app.queue")
-public class AppQueueProperties {
+@ConfigurationProperties(prefix = "app.omdb")
+public class OmdbProperties {
 
-    private String titleEnrichment;
+    private String apiKey;
+    private String baseUrl;
 
 }

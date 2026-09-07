@@ -199,7 +199,7 @@ components:
         data:
           type: array
           items:
-            $ref: '#/components/schemas/TitleCreatedResponse'
+            $ref: '#/components/schemas/TitleListItemResponse'
         pagination:
           $ref: '#/components/schemas/PaginationResponse'
         _links:
@@ -304,6 +304,10 @@ components:
           type: string
           format: date-time
           example: "2026-08-23T10:00:00Z"
+        lastUpdatedDateTime:
+          type: string
+          format: date-time
+          example: "2026-08-23T10:00:00Z"
         name:
           type: string
           example: 'Princess Mononoke'
@@ -320,6 +324,96 @@ components:
           example: '825553181548'
         purchaseDetails:
           $ref: '#/components/schemas/PurchaseDetailsResponse'
+        enrichmentData:
+          $ref: '#/components/schemas/TitleEnrichmentDataResponse'
+
+    TitleListItemResponse:
+      type: object
+      properties:
+        titleId:
+          type: string
+          format: uuid
+          example: '0dc42d37-eb5c-4287-bc51-128260d0ef25'
+        createdDateTime:
+          type: string
+          format: date-time
+          example: "2026-08-23T10:00:00Z"
+        name:
+          type: string
+          example: 'Princess Mononoke'
+        originalName:
+          type: string
+          example: 'Mononoke-hime'
+        studio:
+          type: string
+          example: 'Studio Ghibli'
+        type:
+          $ref: '#/components/schemas/TitleType'
+        enrichmentData:
+          $ref: '#/components/schemas/TitleListItemEnrichmentDataResponse'
+
+    TitleListItemEnrichmentDataResponse:
+      type: object
+      properties:
+        posterUrl:
+          type: string
+          format: uri
+          example: 'https://m.media-amazon.com/images/M/...jpg'
+        genre:
+          type: string
+          example: 'Animation, Adventure, Fantasy'
+        director:
+          type: string
+          example: 'Hayao Miyazaki'
+        imdb:
+          $ref: '#/components/schemas/ImdbResponse'
+        rottenTomatoes:
+          $ref: '#/components/schemas/RottenTomatoesResponse'
+
+    TitleEnrichmentDataResponse:
+      type: object
+      properties:
+        imdb:
+          $ref: '#/components/schemas/ImdbResponse'
+        rottenTomatoes:
+          $ref: '#/components/schemas/RottenTomatoesResponse'
+        plot:
+          type: string
+          example: 'While seeking to cure himself of a curse...'
+        posterUrl:
+          type: string
+          format: uri
+          example: 'https://m.media-amazon.com/images/M/...jpg'
+        genre:
+          type: string
+          example: 'Animation, Adventure, Fantasy'
+        director:
+          type: string
+          example: 'Hayao Miyazaki'
+        year:
+          type: integer
+          example: 1997
+        enrichedAt:
+          type: string
+          format: date-time
+
+    ImdbResponse:
+      type: object
+      properties:
+        rating:
+          type: number
+          format: double
+          example: 8.3
+
+    RottenTomatoesResponse:
+      type: object
+      properties:
+        tomatometer:
+          type: integer
+          example: 93
+        criticRating:
+          type: string
+          example: 'fresh'
 
     PurchaseDetailsResponse:
       type: object

@@ -4,13 +4,12 @@ Collector's Channel Title Registration API — register and manage physical medi
 
 ## Tech Stack
 
-- Java 21 / Spring Boot 4.1.1
-- MongoDB
-- RabbitMQ
-- OpenAPI code-generated models (springdoc)
-- AsyncAPI code-generated models (evryfs/asyncapi-generator)
-- MapStruct + Lombok
-- Spock Framework (tests)
+- **Core**: Java 21, Spring Boot 4.1.1
+- **Data Stores**: MongoDB, Redis
+- **Messaging**: RabbitMQ
+- **API & Contracts**: OpenAPI, AsyncAPI, RestClient
+- **Code Generation**: MapStruct, Lombok
+- **Testing**: Spock Framework
 
 ## Architecture
 
@@ -18,11 +17,12 @@ Clean Architecture with SOLID and CQRS principles.
 
 - **entrypoint** — REST controllers, mappers, utilities
 - **core** — use cases, boundaries (ports), domain models
-- **dataprovider** — gateway implementations (`db/`, `messaging/`)
+- **dataprovider** — gateway implementations (`db/`, `messaging/`, `cache/`, `rest/`)
 
-### Design Patterns
+### Patterns
 
 - **Tiny Parameters** — avoid more than one parameter per method; wrap in records
+- **Dependency Inversion** — all external service access goes through boundary interfaces in `core/boundary/`; implementations live in `dataprovider/`
 
 ## API Endpoints
 
@@ -38,8 +38,22 @@ Clean Architecture with SOLID and CQRS principles.
 
 ```bash
 ./mvnw spring-boot:run              # port 8081
-docker compose up -d --build        # app + MongoDB + RabbitMQ
+docker compose up -d --build        # app + MongoDB + RabbitMQ + Redis
 ```
+
+## Environment Variables
+
+| Variable | Description | Default |
+|----------|-------------|---------|
+| `MONGODB_URI` | MongoDB connection string | `mongodb://titleregistration:password@localhost:27017/titleregistration?authSource=admin` |
+| `RABBITMQ_HOST` | RabbitMQ host | `localhost` |
+| `RABBITMQ_PORT` | RabbitMQ port | `5672` |
+| `RABBITMQ_USERNAME` | RabbitMQ username | `titleregistration` |
+| `RABBITMQ_PASSWORD` | RabbitMQ password | `password` |
+| `REDIS_HOST` | Redis host | `localhost` |
+| `REDIS_PORT` | Redis port | `6379` |
+| `REDIS_PASSWORD` | Redis password | `password` |
+| `OMDB_API_KEY` | OMDb API key | (required for enrichment) |
 
 ## Testing
 
@@ -69,4 +83,4 @@ Open http://localhost:8081/swagger-ui.html after starting the app.
 
 ## RabbitMQ
 
-Management UI at http://localhost:15672.
+- **RabbitMQ Management UI** — http://localhost:15672

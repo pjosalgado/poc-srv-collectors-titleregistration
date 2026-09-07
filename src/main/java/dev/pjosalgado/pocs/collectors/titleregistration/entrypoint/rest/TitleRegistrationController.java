@@ -10,6 +10,7 @@ import dev.pjosalgado.pocs.collectors.titleregistration.core.usecase.DeleteTitle
 import dev.pjosalgado.pocs.collectors.titleregistration.core.usecase.FindAllTitlesUseCase;
 import dev.pjosalgado.pocs.collectors.titleregistration.core.usecase.FindTitleByIdUseCase;
 import dev.pjosalgado.pocs.collectors.titleregistration.core.usecase.UpdateTitleUseCase;
+import dev.pjosalgado.pocs.collectors.titleregistration.entrypoint.rest.mapper.TitleListItemMapper;
 import dev.pjosalgado.pocs.collectors.titleregistration.entrypoint.rest.mapper.TitleRequestMapper;
 import dev.pjosalgado.pocs.collectors.titleregistration.entrypoint.rest.mapper.TitleResponseMapper;
 import dev.pjosalgado.pocs.collectors.titleregistration.entrypoint.rest.record.TitleUpdateContext;
@@ -37,6 +38,7 @@ public class TitleRegistrationController implements RegistrationApiDelegate {
     private final DeleteTitleUseCase deleteTitleUseCase;
     private final TitleRequestMapper titleRequestMapper;
     private final TitleResponseMapper titleResponseMapper;
+    private final TitleListItemMapper titleListItemMapper;
 
     @Override
     public ResponseEntity<TitleDataWrapper> titleCreate(TitleCreateWrapper wrapper) {
@@ -52,7 +54,7 @@ public class TitleRegistrationController implements RegistrationApiDelegate {
         var result = findAllTitlesUseCase.execute(pageable);
         var response = new TitlePageWrapper();
         response.setData(result.getContent().stream()
-                .map(titleResponseMapper::fromTitle)
+                .map(titleListItemMapper::fromTitle)
                 .collect(Collectors.toList()));
         response.setPagination(buildPagination(result));
         response.setLinks(buildPageLinks(result.getNumber(), result.getSize(), result.getTotalPages()).links());

@@ -5,9 +5,10 @@ import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
-
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.domain.Persistable;
 
 import java.time.LocalDateTime;
 
@@ -15,7 +16,7 @@ import java.time.LocalDateTime;
 @ToString
 @EqualsAndHashCode
 @Builder
-public class TitleEntity {
+public class TitleEntity implements Persistable<String> {
 
     @Id
     private String titleId;
@@ -26,8 +27,22 @@ public class TitleEntity {
     private TitleType type;
     private String barcode;
     private PurchaseDetailsEntity purchaseDetails;
+    private TitleEnrichmentDataEntity enrichmentData;
 
     @CreatedDate
     private LocalDateTime createdDateTime;
+
+    @LastModifiedDate
+    private LocalDateTime lastUpdatedDateTime;
+
+    @Override
+    public String getId() {
+        return titleId;
+    }
+
+    @Override
+    public boolean isNew() {
+        return createdDateTime == null;
+    }
 
 }

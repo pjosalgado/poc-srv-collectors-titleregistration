@@ -8,14 +8,14 @@
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>4.1.1</version>
-        <relativePath/> <!-- lookup parent from repository -->
+        <relativePath/>
     </parent>
 
     <groupId>dev.pjosalgado.pocs</groupId>
     <artifactId>poc-srv-collectors-titleregistration</artifactId>
     <version>1.1.0</version>
     <name>poc-srv-collectors-titleregistration</name>
-    <description>poc-srv-collectors-titleregistration</description>
+    <description>Collector's Channel Title Registration API — register and manage physical media titles</description>
 
     <url>https://github.com/pjosalgado/poc-srv-collectors-titleregistration</url>
 
@@ -43,6 +43,8 @@
 
     <properties>
         <java.version>21</java.version>
+        <build-helper-maven-plugin.version>3.6.0</build-helper-maven-plugin.version>
+        <gmavenplus-plugin.version>4.1.1</gmavenplus-plugin.version>
         <springdoc-openapi-starter-webmvc-ui.version>3.1.0</springdoc-openapi-starter-webmvc-ui.version>
         <swagger-annotations.version>2.2.53</swagger-annotations.version>
         <jackson-databind-nullable.version>0.2.11</jackson-databind-nullable.version>
@@ -248,7 +250,6 @@
                                 <delegatePattern>true</delegatePattern>
                                 <serializableModel>true</serializableModel>
                                 <useTags>true</useTags>
-                                <!--suppress UnresolvedMavenProperty -->
                                 <additionalModelTypeAnnotations>
                                     @lombok.Data
                                     @lombok.Builder
@@ -288,7 +289,7 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>build-helper-maven-plugin</artifactId>
-                <version>3.6.0</version>
+                <version>${build-helper-maven-plugin.version}</version>
                 <executions>
                     <execution>
                         <id>add-asyncapi-sources</id>
@@ -317,7 +318,7 @@
             <plugin>
                 <groupId>org.codehaus.gmavenplus</groupId>
                 <artifactId>gmavenplus-plugin</artifactId>
-                <version>4.1.1</version>
+                <version>${gmavenplus-plugin.version}</version>
                 <executions>
                     <execution>
                         <goals>

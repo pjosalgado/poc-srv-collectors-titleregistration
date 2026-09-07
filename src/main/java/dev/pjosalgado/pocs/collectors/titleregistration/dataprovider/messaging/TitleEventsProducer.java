@@ -1,7 +1,7 @@
 package dev.pjosalgado.pocs.collectors.titleregistration.dataprovider.messaging;
 
 import dev.pjosalgado.pocs.collectors.asyncapi.model.TitleEnrichmentPayload;
-import dev.pjosalgado.pocs.collectors.titleregistration.config.properties.AppQueueProperties;
+import dev.pjosalgado.pocs.collectors.titleregistration.config.properties.QueueProperties;
 import dev.pjosalgado.pocs.collectors.titleregistration.core.boundary.TitleEventsBoundary;
 import dev.pjosalgado.pocs.collectors.titleregistration.core.model.Title;
 import lombok.RequiredArgsConstructor;
@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 public class TitleEventsProducer implements TitleEventsBoundary {
 
     private final RabbitTemplate rabbitTemplate;
-    private final AppQueueProperties appQueueProperties;
+    private final QueueProperties queueProperties;
 
     @Override
     public void publishTitleEnrichment(Title title) {
@@ -23,7 +23,7 @@ public class TitleEventsProducer implements TitleEventsBoundary {
                 title.getOriginalName(),
                 title.getStudio()
         );
-        rabbitTemplate.convertAndSend(appQueueProperties.getTitleEnrichment(), message);
+        rabbitTemplate.convertAndSend(queueProperties.getTitleEnrichment(), message);
     }
 
 }

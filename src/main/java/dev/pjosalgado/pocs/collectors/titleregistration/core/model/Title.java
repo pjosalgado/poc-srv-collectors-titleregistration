@@ -22,7 +22,9 @@ public class Title {
     private TitleType type;
     private String barcode;
     private PurchaseDetails purchaseDetails;
+    private TitleEnrichmentData enrichmentData;
     private LocalDateTime createdDateTime;
+    private LocalDateTime lastUpdatedDateTime;
 
     public void generateId() {
         this.titleId = UUID.randomUUID().toString();
@@ -35,6 +37,12 @@ public class Title {
         if (updates.type != null) this.type = updates.type;
         if (updates.barcode != null) this.barcode = updates.barcode;
         if (updates.purchaseDetails != null) this.purchaseDetails = updates.purchaseDetails;
+        if (updates.enrichmentData != null) this.enrichmentData = updates.enrichmentData;
+        this.lastUpdatedDateTime = LocalDateTime.now();
+    }
+
+    public void clearEnrichmentData() {
+        this.enrichmentData = null;
     }
 
 }
