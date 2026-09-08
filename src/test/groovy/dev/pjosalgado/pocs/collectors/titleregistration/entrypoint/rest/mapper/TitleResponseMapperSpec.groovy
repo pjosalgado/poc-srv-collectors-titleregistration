@@ -1,7 +1,8 @@
 package dev.pjosalgado.pocs.collectors.titleregistration.entrypoint.rest.mapper
 
 import dev.pjosalgado.pocs.collectors.openapi.model.MonetaryType
-import dev.pjosalgado.pocs.collectors.openapi.model.TitleType
+import dev.pjosalgado.pocs.collectors.openapi.model.MediaType
+import dev.pjosalgado.pocs.collectors.openapi.model.TitleKind
 import dev.pjosalgado.pocs.collectors.titleregistration.core.model.PurchaseDetails
 import dev.pjosalgado.pocs.collectors.titleregistration.core.model.Title
 import org.springframework.beans.factory.annotation.Autowired
@@ -28,7 +29,8 @@ class TitleResponseMapperSpec extends Specification {
                 .name("Princess Mononoke")
                 .originalName("Mononoke-hime")
                 .studio("Studio Ghibli")
-                .type(TitleType.BLU_RAY)
+                .mediaFormat(MediaType.BLU_RAY)
+                .titleCategory(TitleKind.MOVIE)
                 .barcode("123456789")
                 .purchaseDetails(purchaseDetails)
                 .createdDateTime(LocalDateTime.of(2025, 1, 15, 10, 30))
@@ -43,7 +45,8 @@ class TitleResponseMapperSpec extends Specification {
         response.getName() == "Princess Mononoke"
         response.getOriginalName() == "Mononoke-hime"
         response.getStudio() == "Studio Ghibli"
-        response.getType() == TitleType.BLU_RAY
+        response.getMediaFormat() == MediaType.BLU_RAY
+        response.getTitleCategory() == TitleKind.MOVIE
         response.getBarcode() == "123456789"
         response.getCreatedDateTime() != null
         response.getCreatedDateTime().getOffset() != null
@@ -60,7 +63,8 @@ class TitleResponseMapperSpec extends Specification {
         def title = Title.builder()
                 .titleId(UUID.randomUUID().toString())
                 .name("Test")
-                .type(TitleType.DVD)
+                .mediaFormat(MediaType.DVD)
+                .titleCategory(TitleKind.MOVIE)
                 .build()
 
         when:
@@ -69,7 +73,8 @@ class TitleResponseMapperSpec extends Specification {
         then:
         response.getTitleId().toString() == title.getTitleId()
         response.getName() == "Test"
-        response.getType() == TitleType.DVD
+        response.getMediaFormat() == MediaType.DVD
+        response.getTitleCategory() == TitleKind.MOVIE
         response.getOriginalName() == null
         response.getStudio() == null
         response.getBarcode() == null
@@ -83,7 +88,8 @@ class TitleResponseMapperSpec extends Specification {
         def title = Title.builder()
                 .titleId(UUID.randomUUID().toString())
                 .name("Date Test")
-                .type(TitleType.DVD)
+                .mediaFormat(MediaType.DVD)
+                .titleCategory(TitleKind.TV_SHOW)
                 .createdDateTime(LocalDateTime.of(2025, 6, 15, 14, 30, 0))
                 .lastUpdatedDateTime(LocalDateTime.of(2025, 6, 20, 16, 45, 0))
                 .build()

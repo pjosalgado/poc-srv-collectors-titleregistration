@@ -21,7 +21,8 @@ public class TitleEventsProducer implements TitleEventsBoundary {
                 title.getTitleId(),
                 title.getName(),
                 title.getOriginalName(),
-                title.getStudio()
+                title.getStudio(),
+                title.getTitleCategory() != null ? title.getTitleCategory().getValue() : null
         );
         rabbitTemplate.convertAndSend(queueProperties.getTitleEnrichment(), message);
     }

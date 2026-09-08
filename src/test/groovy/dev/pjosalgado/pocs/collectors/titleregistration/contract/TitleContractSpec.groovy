@@ -33,7 +33,8 @@ class TitleContractSpec extends Specification {
             "data": {
                 "name": "Princess Mononoke",
                 "studio": "Studio Ghibli",
-                "type": "BLU_RAY"
+                "mediaFormat": "BLU_RAY",
+                "titleCategory": "MOVIE"
             }
         }
         """
@@ -48,7 +49,8 @@ class TitleContractSpec extends Specification {
         result.andExpect(jsonPath('$.data.titleId').isNotEmpty())
         result.andExpect(jsonPath('$.data.name').value("Princess Mononoke"))
         result.andExpect(jsonPath('$.data.studio').value("Studio Ghibli"))
-        result.andExpect(jsonPath('$.data.type').value("BLU_RAY"))
+        result.andExpect(jsonPath('$.data.mediaFormat').value("BLU_RAY"))
+        result.andExpect(jsonPath('$.data.titleCategory').value("MOVIE"))
         result.andExpect(jsonPath('$.data.createdDateTime').isNotEmpty())
     }
 
@@ -56,7 +58,7 @@ class TitleContractSpec extends Specification {
         given:
         def createResult = mockMvc.perform(post("/registration/v1/titles")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content('{"data":{"name":"Test","type":"DVD"}}'))
+                .content('{"data":{"name":"Test","mediaFormat":"DVD","titleCategory":"MOVIE"}}'))
         def body = objectMapper.readTree(createResult.andReturn().response.contentAsString)
         def titleId = body.get("data").get("titleId").asText()
 
@@ -80,7 +82,7 @@ class TitleContractSpec extends Specification {
         given:
         def createResult = mockMvc.perform(post("/registration/v1/titles")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content('{"data":{"name":"Original","type":"DVD"}}'))
+                .content('{"data":{"name":"Original","mediaFormat":"DVD","titleCategory":"TV_SHOW"}}'))
         def body = objectMapper.readTree(createResult.andReturn().response.contentAsString)
         def titleId = body.get("data").get("titleId").asText()
 
@@ -99,7 +101,7 @@ class TitleContractSpec extends Specification {
         given:
         def createResult = mockMvc.perform(post("/registration/v1/titles")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content('{"data":{"name":"To Delete","type":"DVD"}}'))
+                .content('{"data":{"name":"To Delete","mediaFormat":"DVD","titleCategory":"MOVIE"}}'))
         def body = objectMapper.readTree(createResult.andReturn().response.contentAsString)
         def titleId = body.get("data").get("titleId").asText()
 

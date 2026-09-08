@@ -1,6 +1,7 @@
 package dev.pjosalgado.pocs.collectors.titleregistration.dataprovider.db.entity;
 
-import dev.pjosalgado.pocs.collectors.openapi.model.TitleType;
+import dev.pjosalgado.pocs.collectors.openapi.model.MediaType;
+import dev.pjosalgado.pocs.collectors.openapi.model.TitleKind;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -24,7 +25,8 @@ public class TitleEntity implements Persistable<String> {
     private String name;
     private String originalName;
     private String studio;
-    private TitleType type;
+    private MediaType mediaFormat;
+    private TitleKind titleCategory;
     private String barcode;
     private PurchaseDetailsEntity purchaseDetails;
     private TitleEnrichmentDataEntity enrichmentData;

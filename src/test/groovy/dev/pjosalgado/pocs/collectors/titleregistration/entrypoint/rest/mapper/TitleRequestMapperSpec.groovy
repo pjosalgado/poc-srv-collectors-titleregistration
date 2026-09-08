@@ -3,7 +3,8 @@ package dev.pjosalgado.pocs.collectors.titleregistration.entrypoint.rest.mapper
 import dev.pjosalgado.pocs.collectors.openapi.model.MonetaryType
 import dev.pjosalgado.pocs.collectors.openapi.model.PurchaseDetailsRequest
 import dev.pjosalgado.pocs.collectors.openapi.model.TitleCreateRequest
-import dev.pjosalgado.pocs.collectors.openapi.model.TitleType
+import dev.pjosalgado.pocs.collectors.openapi.model.MediaType
+import dev.pjosalgado.pocs.collectors.openapi.model.TitleKind
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import spock.lang.Specification
@@ -25,7 +26,8 @@ class TitleRequestMapperSpec extends Specification {
         request.setName("Princess Mononoke")
         request.setOriginalName("Mononoke-hime")
         request.setStudio("Studio Ghibli")
-        request.setType(TitleType.BLU_RAY)
+        request.setMediaFormat(MediaType.BLU_RAY)
+        request.setTitleCategory(TitleKind.MOVIE)
         request.setBarcode("123456789")
         request.setPurchaseDetails(purchaseDetails)
 
@@ -36,7 +38,8 @@ class TitleRequestMapperSpec extends Specification {
         title.getName() == "Princess Mononoke"
         title.getOriginalName() == "Mononoke-hime"
         title.getStudio() == "Studio Ghibli"
-        title.getType() == TitleType.BLU_RAY
+        title.getMediaFormat() == MediaType.BLU_RAY
+        title.getTitleCategory() == TitleKind.MOVIE
         title.getBarcode() == "123456789"
         title.getPurchaseDetails() != null
         title.getPurchaseDetails().getStore() == "Amazon"
@@ -48,14 +51,16 @@ class TitleRequestMapperSpec extends Specification {
         given:
         def request = new TitleCreateRequest()
         request.setName("Test Title")
-        request.setType(TitleType.DVD)
+        request.setMediaFormat(MediaType.DVD)
+        request.setTitleCategory(TitleKind.MOVIE)
 
         when:
         def title = titleRequestMapper.toTitle(request)
 
         then:
         title.getName() == "Test Title"
-        title.getType() == TitleType.DVD
+        title.getMediaFormat() == MediaType.DVD
+        title.getTitleCategory() == TitleKind.MOVIE
         title.getOriginalName() == null
         title.getStudio() == null
         title.getBarcode() == null
@@ -66,7 +71,8 @@ class TitleRequestMapperSpec extends Specification {
         given:
         def request = new TitleCreateRequest()
         request.setName("No Purchase")
-        request.setType(TitleType.DVD)
+        request.setMediaFormat(MediaType.DVD)
+        request.setTitleCategory(TitleKind.MOVIE)
         request.setPurchaseDetails(null)
 
         when:

@@ -237,7 +237,8 @@ components:
       type: object
       required:
         - name
-        - type
+        - mediaFormat
+        - titleCategory
       properties:
         name:
           type: string
@@ -248,8 +249,10 @@ components:
         studio:
           type: string
           example: 'Studio Ghibli'
-        type:
-          $ref: '#/components/schemas/TitleType'
+        mediaFormat:
+          $ref: '#/components/schemas/MediaType'
+        titleCategory:
+          $ref: '#/components/schemas/TitleKind'
         barcode:
           type: string
           example: '825553181548'
@@ -268,8 +271,10 @@ components:
         studio:
           type: string
           example: 'Studio Ghibli'
-        type:
-          $ref: '#/components/schemas/TitleType'
+        mediaFormat:
+          $ref: '#/components/schemas/MediaType'
+        titleCategory:
+          $ref: '#/components/schemas/TitleKind'
         barcode:
           type: string
           example: '825553181548'
@@ -317,8 +322,10 @@ components:
         studio:
           type: string
           example: 'Studio Ghibli'
-        type:
-          $ref: '#/components/schemas/TitleType'
+        mediaFormat:
+          $ref: '#/components/schemas/MediaType'
+        titleCategory:
+          $ref: '#/components/schemas/TitleKind'
         barcode:
           type: string
           example: '825553181548'
@@ -347,8 +354,10 @@ components:
         studio:
           type: string
           example: 'Studio Ghibli'
-        type:
-          $ref: '#/components/schemas/TitleType'
+        mediaFormat:
+          $ref: '#/components/schemas/MediaType'
+        titleCategory:
+          $ref: '#/components/schemas/TitleKind'
         enrichmentData:
           $ref: '#/components/schemas/TitleListItemEnrichmentDataResponse'
 
@@ -450,7 +459,7 @@ components:
         detail:
           type: string
 
-    TitleType:
+    MediaType:
       type: string
       enum:
         - VHS
@@ -459,6 +468,15 @@ components:
         - BLU_RAY_4K
         - COMBO
       example: BLU_RAY
+
+    TitleKind:
+      type: string
+      enum:
+        - MOVIE
+        - TV_SHOW
+        - DOCUMENTARY
+        - MUSIC_SHOW
+      example: MOVIE
 
     MonetaryType:
       type: string

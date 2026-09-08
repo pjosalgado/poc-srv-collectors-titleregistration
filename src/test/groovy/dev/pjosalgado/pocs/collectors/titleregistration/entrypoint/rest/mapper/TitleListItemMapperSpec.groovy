@@ -1,6 +1,7 @@
 package dev.pjosalgado.pocs.collectors.titleregistration.entrypoint.rest.mapper
 
-import dev.pjosalgado.pocs.collectors.openapi.model.TitleType
+import dev.pjosalgado.pocs.collectors.openapi.model.MediaType
+import dev.pjosalgado.pocs.collectors.openapi.model.TitleKind
 import dev.pjosalgado.pocs.collectors.titleregistration.core.model.Imdb
 import dev.pjosalgado.pocs.collectors.titleregistration.core.model.RottenTomatoes
 import dev.pjosalgado.pocs.collectors.titleregistration.core.model.Title
@@ -34,7 +35,8 @@ class TitleListItemMapperSpec extends Specification {
                 .name("Princess Mononoke")
                 .originalName("Mononoke-hime")
                 .studio("Studio Ghibli")
-                .type(TitleType.BLU_RAY)
+                .mediaFormat(MediaType.BLU_RAY)
+                .titleCategory(TitleKind.MOVIE)
                 .enrichmentData(enrichmentData)
                 .build()
 
@@ -46,7 +48,8 @@ class TitleListItemMapperSpec extends Specification {
         response.getName() == "Princess Mononoke"
         response.getOriginalName() == "Mononoke-hime"
         response.getStudio() == "Studio Ghibli"
-        response.getType() == TitleType.BLU_RAY
+        response.getMediaFormat() == MediaType.BLU_RAY
+        response.getTitleCategory() == TitleKind.MOVIE
         response.getEnrichmentData() != null
         response.getEnrichmentData().getPosterUrl() != null
         response.getEnrichmentData().getPosterUrl().toString().startsWith("https://")
@@ -64,7 +67,8 @@ class TitleListItemMapperSpec extends Specification {
         def title = Title.builder()
                 .titleId("1a2b3c4d-5e6f-7a8b-9c0d-1e2f3a4b5c6d")
                 .name("Test Title")
-                .type(TitleType.DVD)
+                .mediaFormat(MediaType.DVD)
+                .titleCategory(TitleKind.TV_SHOW)
                 .build()
 
         when:
@@ -73,7 +77,8 @@ class TitleListItemMapperSpec extends Specification {
         then:
         response.getTitleId().toString() == "1a2b3c4d-5e6f-7a8b-9c0d-1e2f3a4b5c6d"
         response.getName() == "Test Title"
-        response.getType() == TitleType.DVD
+        response.getMediaFormat() == MediaType.DVD
+        response.getTitleCategory() == TitleKind.TV_SHOW
         response.getEnrichmentData() == null
     }
 
@@ -87,7 +92,8 @@ class TitleListItemMapperSpec extends Specification {
         def title = Title.builder()
                 .titleId("2b3c4d5e-6f7a-8b9c-0d1e-2f3a4b5c6d7e")
                 .name("No Poster")
-                .type(TitleType.DVD)
+                .mediaFormat(MediaType.DVD)
+                .titleCategory(TitleKind.MOVIE)
                 .enrichmentData(enrichmentData)
                 .build()
 

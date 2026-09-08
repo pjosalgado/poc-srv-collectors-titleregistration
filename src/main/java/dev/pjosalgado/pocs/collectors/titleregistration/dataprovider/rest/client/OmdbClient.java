@@ -21,6 +21,7 @@ public class OmdbClient {
                 .uri(uriBuilder -> uriBuilder
                         .queryParam("apikey", apiKey)
                         .queryParam("t", title)
+                        .queryParam("plot", "full")
                         .build())
                 .retrieve()
                 .body(OmdbResponse.class);

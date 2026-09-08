@@ -1,6 +1,7 @@
 package dev.pjosalgado.pocs.collectors.titleregistration.entrypoint.messaging;
 
 import dev.pjosalgado.pocs.collectors.asyncapi.model.TitleEnrichmentPayload;
+import dev.pjosalgado.pocs.collectors.openapi.model.TitleKind;
 import dev.pjosalgado.pocs.collectors.titleregistration.core.record.TitleEnrichmentRequest;
 import dev.pjosalgado.pocs.collectors.titleregistration.core.usecase.EnrichTitleUseCase;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +22,8 @@ public class TitleEventsConsumer {
                 message.titleId(),
                 message.name(),
                 message.originalName(),
-                message.studio()
+                message.studio(),
+                message.titleCategory() != null ? TitleKind.fromValue(message.titleCategory()) : null
         );
         enrichTitleUseCase.execute(request);
     }

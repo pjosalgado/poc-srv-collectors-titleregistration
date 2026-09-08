@@ -83,4 +83,4 @@ Open http://localhost:8081/swagger-ui.html after starting the app.
 
 ## RabbitMQ
 
-- **RabbitMQ Management UI** — http://localhost:15672
+RabbitMQ Management UI — http://localhost:15672

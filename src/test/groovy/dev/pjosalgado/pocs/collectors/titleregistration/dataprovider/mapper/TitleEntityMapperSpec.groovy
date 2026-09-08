@@ -1,7 +1,8 @@
 package dev.pjosalgado.pocs.collectors.titleregistration.dataprovider.mapper
 
 import dev.pjosalgado.pocs.collectors.openapi.model.MonetaryType
-import dev.pjosalgado.pocs.collectors.openapi.model.TitleType
+import dev.pjosalgado.pocs.collectors.openapi.model.MediaType
+import dev.pjosalgado.pocs.collectors.openapi.model.TitleKind
 import dev.pjosalgado.pocs.collectors.titleregistration.core.model.PurchaseDetails
 import dev.pjosalgado.pocs.collectors.titleregistration.core.model.Title
 import dev.pjosalgado.pocs.collectors.titleregistration.dataprovider.db.entity.PurchaseDetailsEntity
@@ -31,7 +32,8 @@ class TitleEntityMapperSpec extends Specification {
                 .name("Princess Mononoke")
                 .originalName("Mononoke-hime")
                 .studio("Studio Ghibli")
-                .type(TitleType.BLU_RAY)
+                .mediaFormat(MediaType.BLU_RAY)
+                .titleCategory(TitleKind.MOVIE)
                 .barcode("123456789")
                 .purchaseDetails(purchaseDetails)
                 .createdDateTime(LocalDateTime.of(2025, 1, 15, 10, 30))
@@ -45,7 +47,8 @@ class TitleEntityMapperSpec extends Specification {
         entity.getName() == "Princess Mononoke"
         entity.getOriginalName() == "Mononoke-hime"
         entity.getStudio() == "Studio Ghibli"
-        entity.getType() == TitleType.BLU_RAY
+        entity.getMediaFormat() == MediaType.BLU_RAY
+        entity.getTitleCategory() == TitleKind.MOVIE
         entity.getBarcode() == "123456789"
         entity.getCreatedDateTime() == LocalDateTime.of(2025, 1, 15, 10, 30)
         entity.getPurchaseDetails() != null
@@ -66,7 +69,8 @@ class TitleEntityMapperSpec extends Specification {
                 .name("Spirited Away")
                 .originalName("Sen to Chihiro")
                 .studio("Studio Ghibli")
-                .type(TitleType.DVD)
+                .mediaFormat(MediaType.DVD)
+                .titleCategory(TitleKind.MOVIE)
                 .barcode("987654321")
                 .purchaseDetails(purchaseDetailsEntity)
                 .createdDateTime(LocalDateTime.of(2025, 6, 15, 14, 30))
@@ -80,7 +84,8 @@ class TitleEntityMapperSpec extends Specification {
         title.getName() == "Spirited Away"
         title.getOriginalName() == "Sen to Chihiro"
         title.getStudio() == "Studio Ghibli"
-        title.getType() == TitleType.DVD
+        title.getMediaFormat() == MediaType.DVD
+        title.getTitleCategory() == TitleKind.MOVIE
         title.getBarcode() == "987654321"
         title.getCreatedDateTime() == LocalDateTime.of(2025, 6, 15, 14, 30)
         title.getPurchaseDetails() != null
@@ -94,7 +99,7 @@ class TitleEntityMapperSpec extends Specification {
         def title = Title.builder()
                 .titleId("uuid-789")
                 .name("No Purchase")
-                .type(TitleType.DVD)
+                .mediaFormat(MediaType.DVD)
                 .build()
 
         when:
@@ -109,7 +114,7 @@ class TitleEntityMapperSpec extends Specification {
         def entity = TitleEntity.builder()
                 .titleId("uuid-012")
                 .name("No Purchase")
-                .type(TitleType.DVD)
+                .mediaFormat(MediaType.DVD)
                 .build()
 
         when:
@@ -131,7 +136,8 @@ class TitleEntityMapperSpec extends Specification {
                 .name("Roundtrip Test")
                 .originalName("Original")
                 .studio("Test Studio")
-                .type(TitleType.COMBO)
+                .mediaFormat(MediaType.COMBO)
+                .titleCategory(TitleKind.DOCUMENTARY)
                 .barcode("barcode-rt")
                 .purchaseDetails(purchaseDetails)
                 .createdDateTime(LocalDateTime.of(2025, 3, 20, 8, 0))
@@ -146,7 +152,8 @@ class TitleEntityMapperSpec extends Specification {
         restored.getName() == original.getName()
         restored.getOriginalName() == original.getOriginalName()
         restored.getStudio() == original.getStudio()
-        restored.getType() == original.getType()
+        restored.getMediaFormat() == original.getMediaFormat()
+        restored.getTitleCategory() == original.getTitleCategory()
         restored.getBarcode() == original.getBarcode()
         restored.getCreatedDateTime() == original.getCreatedDateTime()
         restored.getPurchaseDetails().getStore() == original.getPurchaseDetails().getStore()

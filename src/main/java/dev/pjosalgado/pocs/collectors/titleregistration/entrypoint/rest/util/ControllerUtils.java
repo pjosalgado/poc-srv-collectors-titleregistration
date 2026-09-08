@@ -81,7 +81,8 @@ public class ControllerUtils {
                 .name(request.getName())
                 .originalName(request.getOriginalName())
                 .studio(request.getStudio())
-                .type(request.getType())
+                .mediaFormat(request.getMediaFormat())
+                .titleCategory(request.getTitleCategory())
                 .barcode(request.getBarcode())
                 .purchaseDetails(purchaseDetails)
                 .build();

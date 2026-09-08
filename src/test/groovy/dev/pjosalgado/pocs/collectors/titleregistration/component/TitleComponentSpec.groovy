@@ -30,7 +30,7 @@ class TitleComponentSpec extends Specification {
         when: "create a title"
         def createResult = mockMvc.perform(post("/registration/v1/titles")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content('{"data":{"name":"Spirited Away","studio":"Studio Ghibli","type":"BLU_RAY_4K","purchaseDetails":{"store":"Amazon","price":199.99,"currency":"BRAZILIAN_REAL"}}}'))
+                .content('{"data":{"name":"Spirited Away","studio":"Studio Ghibli","mediaFormat":"BLU_RAY_4K","titleCategory":"MOVIE","purchaseDetails":{"store":"Amazon","price":199.99,"currency":"BRAZILIAN_REAL"}}}'))
         def createdBody = objectMapper.readTree(createResult.andReturn().response.contentAsString)
         def titleId = createdBody.get("data").get("titleId").asText()
 

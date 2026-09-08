@@ -1,5 +1,6 @@
 package dev.pjosalgado.pocs.collectors.titleregistration.core.usecase;
 
+import dev.pjosalgado.pocs.collectors.openapi.model.TitleKind;
 import dev.pjosalgado.pocs.collectors.titleregistration.core.boundary.OmdbBoundary;
 import dev.pjosalgado.pocs.collectors.titleregistration.core.boundary.TitleCacheBoundary;
 import dev.pjosalgado.pocs.collectors.titleregistration.core.boundary.TitlePersistenceBoundary;
@@ -11,17 +12,25 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
+import java.util.Set;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
 public class EnrichTitleUseCase {
 
+    private static final Set<TitleKind> SUPPORTED_CATEGORIES = Set.of(TitleKind.MOVIE, TitleKind.TV_SHOW);
+
     private final OmdbBoundary omdbBoundary;
     private final TitleCacheBoundary titleEnrichmentCache;
     private final TitlePersistenceBoundary titlePersistenceBoundary;
 
     public void execute(TitleEnrichmentRequest request) {
+        if (request.titleCategory() == null || !SUPPORTED_CATEGORIES.contains(request.titleCategory())) {
+            log.warn("Enrichment not supported for titleCategory: {} (titleId: {})", request.titleCategory(), request.titleId());
+            return;
+        }
+
         log.info("Enriching title: {} - {} / {}", request.titleId(), request.originalName(), request.name());
 
         Optional<TitleEnrichmentData> enrichmentData = searchWithFallback(request.originalName(), request.name());

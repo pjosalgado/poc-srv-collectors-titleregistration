@@ -7,7 +7,7 @@ import dev.pjosalgado.pocs.collectors.openapi.model.TitleUpdateWrapper
 import dev.pjosalgado.pocs.collectors.openapi.model.TitleCreatedResponse
 import dev.pjosalgado.pocs.collectors.openapi.model.TitleDataWrapper
 import dev.pjosalgado.pocs.collectors.openapi.model.TitleListItemResponse
-import dev.pjosalgado.pocs.collectors.openapi.model.TitleType
+import dev.pjosalgado.pocs.collectors.openapi.model.MediaType
 import dev.pjosalgado.pocs.collectors.titleregistration.core.model.Title
 import dev.pjosalgado.pocs.collectors.titleregistration.core.usecase.CreateTitleUseCase
 import dev.pjosalgado.pocs.collectors.titleregistration.core.usecase.DeleteTitleUseCase

@@ -1,6 +1,7 @@
 package dev.pjosalgado.pocs.collectors.titleregistration.core.model;
 
-import dev.pjosalgado.pocs.collectors.openapi.model.TitleType;
+import dev.pjosalgado.pocs.collectors.openapi.model.MediaType;
+import dev.pjosalgado.pocs.collectors.openapi.model.TitleKind;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -19,7 +20,8 @@ public class Title {
     private String name;
     private String originalName;
     private String studio;
-    private TitleType type;
+    private MediaType mediaFormat;
+    private TitleKind titleCategory;
     private String barcode;
     private PurchaseDetails purchaseDetails;
     private TitleEnrichmentData enrichmentData;
@@ -34,7 +36,8 @@ public class Title {
         if (updates.name != null) this.name = updates.name;
         if (updates.originalName != null) this.originalName = updates.originalName;
         if (updates.studio != null) this.studio = updates.studio;
-        if (updates.type != null) this.type = updates.type;
+        if (updates.mediaFormat != null) this.mediaFormat = updates.mediaFormat;
+        if (updates.titleCategory != null) this.titleCategory = updates.titleCategory;
         if (updates.barcode != null) this.barcode = updates.barcode;
         if (updates.purchaseDetails != null) this.purchaseDetails = updates.purchaseDetails;
         if (updates.enrichmentData != null) this.enrichmentData = updates.enrichmentData;

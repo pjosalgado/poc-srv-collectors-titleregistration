@@ -1,7 +1,8 @@
 package dev.pjosalgado.pocs.collectors.titleregistration.dataprovider.db
 
 import dev.pjosalgado.pocs.collectors.titleregistration.core.model.Title
-import dev.pjosalgado.pocs.collectors.openapi.model.TitleType
+import dev.pjosalgado.pocs.collectors.openapi.model.MediaType
+import dev.pjosalgado.pocs.collectors.openapi.model.TitleKind
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.TestPropertySource
@@ -21,7 +22,8 @@ class TitleGatewaySpec extends Specification {
         def title = Title.builder()
                 .name("Princess Mononoke")
                 .studio("Studio Ghibli")
-                .type(TitleType.BLU_RAY)
+                .mediaFormat(MediaType.BLU_RAY)
+                .titleCategory(TitleKind.MOVIE)
                 .build()
 
         when:
@@ -42,7 +44,7 @@ class TitleGatewaySpec extends Specification {
     def "update modifies existing title"() {
         given:
         def created = titleGateway.create(
-                Title.builder().name("Old Name").studio("Studio").type(TitleType.DVD).build()
+                Title.builder().name("Old Name").studio("Studio").mediaFormat(MediaType.DVD).titleCategory(TitleKind.MOVIE).build()
         )
 
         when:
@@ -63,7 +65,7 @@ class TitleGatewaySpec extends Specification {
     def "deleteById removes title"() {
         given:
         def created = titleGateway.create(
-                Title.builder().name("To Delete").type(TitleType.DVD).build()
+                Title.builder().name("To Delete").mediaFormat(MediaType.DVD).titleCategory(TitleKind.MOVIE).build()
         )
 
         when:

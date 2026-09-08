@@ -1,7 +1,8 @@
 package dev.pjosalgado.pocs.collectors.titleregistration.core.model
 
 import dev.pjosalgado.pocs.collectors.openapi.model.MonetaryType
-import dev.pjosalgado.pocs.collectors.openapi.model.TitleType
+import dev.pjosalgado.pocs.collectors.openapi.model.MediaType
+import dev.pjosalgado.pocs.collectors.openapi.model.TitleKind
 import spock.lang.Specification
 
 class TitleSpec extends Specification {
@@ -24,20 +25,22 @@ class TitleSpec extends Specification {
                 .titleId("id-1")
                 .name("Original Name")
                 .studio("Original Studio")
-                .type(TitleType.DVD)
+                .mediaFormat(MediaType.DVD)
+                .titleCategory(TitleKind.MOVIE)
                 .build()
 
         when:
         def updates = Title.builder()
                 .name("New Name")
-                .type(TitleType.BLU_RAY)
+                .mediaFormat(MediaType.BLU_RAY)
                 .build()
         title.applyUpdates(updates)
 
         then:
         title.getName() == "New Name"
         title.getStudio() == "Original Studio"
-        title.getType() == TitleType.BLU_RAY
+        title.getMediaFormat() == MediaType.BLU_RAY
+        title.getTitleCategory() == TitleKind.MOVIE
         title.getTitleId() == "id-1"
     }
 
@@ -55,7 +58,8 @@ class TitleSpec extends Specification {
                 .name("Name")
                 .originalName("Original")
                 .studio("Studio")
-                .type(TitleType.DVD)
+                .mediaFormat(MediaType.DVD)
+                .titleCategory(TitleKind.TV_SHOW)
                 .barcode("123")
                 .purchaseDetails(purchaseDetails)
                 .build()
@@ -65,7 +69,8 @@ class TitleSpec extends Specification {
         title.getName() == "Name"
         title.getOriginalName() == "Original"
         title.getStudio() == "Studio"
-        title.getType() == TitleType.DVD
+        title.getMediaFormat() == MediaType.DVD
+        title.getTitleCategory() == TitleKind.TV_SHOW
         title.getBarcode() == "123"
         title.getPurchaseDetails() == purchaseDetails
     }

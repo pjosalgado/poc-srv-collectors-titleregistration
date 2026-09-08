@@ -80,6 +80,11 @@ components:
           description: Production studio
           examples:
             - Studio Ghibli
+        titleCategory:
+          type: string
+          description: Category of the title (MOVIE, TV_SHOW, DOCUMENTARY, MUSIC_SHOW)
+          examples:
+            - MOVIE
       required:
         - titleId
         - name

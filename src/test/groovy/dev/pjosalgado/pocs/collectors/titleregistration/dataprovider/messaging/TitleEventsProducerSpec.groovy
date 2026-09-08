@@ -1,5 +1,6 @@
 package dev.pjosalgado.pocs.collectors.titleregistration.dataprovider.messaging
 
+import dev.pjosalgado.pocs.collectors.openapi.model.TitleKind
 import dev.pjosalgado.pocs.collectors.titleregistration.config.properties.QueueProperties
 import dev.pjosalgado.pocs.collectors.titleregistration.core.model.Title
 import org.springframework.amqp.rabbit.core.RabbitTemplate
@@ -18,6 +19,7 @@ class TitleEventsProducerSpec extends Specification {
                 .name("Princess Mononoke")
                 .originalName("Mononoke-hime")
                 .studio("Studio Ghibli")
+                .titleCategory(TitleKind.MOVIE)
                 .build()
 
         when:
@@ -29,7 +31,8 @@ class TitleEventsProducerSpec extends Specification {
             it.titleId() == "uuid-123" &&
             it.name() == "Princess Mononoke" &&
             it.originalName() == "Mononoke-hime" &&
-            it.studio() == "Studio Ghibli"
+            it.studio() == "Studio Ghibli" &&
+            it.titleCategory() == "MOVIE"
         })
     }
 
@@ -49,7 +52,8 @@ class TitleEventsProducerSpec extends Specification {
             it.titleId() == "uuid-456" &&
             it.name() == "Test Title" &&
             it.originalName() == null &&
-            it.studio() == null
+            it.studio() == null &&
+            it.titleCategory() == null
         })
     }
 }
