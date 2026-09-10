@@ -15,6 +15,7 @@ public class UpdateTitleUseCase {
     private final TitleEventsBoundary titleEventsBoundary;
 
     public Title execute(Title updates) {
+
         var existing = titlePersistenceBoundary.findById(updates.getTitleId())
                 .orElseThrow(() -> new TitleNotFoundException(updates.getTitleId()));
 

@@ -30,7 +30,7 @@ app:
     base-url: https://www.omdbapi.com
   cache:
     title-enrichment:
-      ttl: 10s
+      ttl: 10m
 
 springdoc:
   api-docs:

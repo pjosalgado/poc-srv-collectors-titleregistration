@@ -26,19 +26,22 @@ public class EnrichTitleUseCase {
     private final TitlePersistenceBoundary titlePersistenceBoundary;
 
     public void execute(TitleEnrichmentRequest request) {
+
         if (request.titleCategory() == null || !SUPPORTED_CATEGORIES.contains(request.titleCategory())) {
             log.warn("Enrichment not supported for titleCategory: {} (titleId: {})", request.titleCategory(), request.titleId());
             return;
         }
 
-        log.info("Enriching title: {} - {} / {}", request.titleId(), request.originalName(), request.name());
+        log.info("Enriching title: {} - {} / {}", request.titleId(), request.name(), request.originalName());
 
         Optional<TitleEnrichmentData> enrichmentData = searchWithFallback(request.originalName(), request.name());
         enrichmentData.ifPresent(data -> updateTitleWithEnrichmentData(request.titleId(), data));
     }
 
     private Optional<TitleEnrichmentData> searchWithFallback(String originalName, String name) {
+
         Optional<TitleEnrichmentData> result = searchByName(originalName);
+
         if (result.isPresent()) {
             return result;
         }
@@ -51,13 +54,21 @@ public class EnrichTitleUseCase {
     }
 
     private Optional<TitleEnrichmentData> searchByName(String name) {
+
         Optional<TitleEnrichmentData> cached = titleEnrichmentCache.get(name);
+
         if (cached.isPresent()) {
+            log.info("Found enrichment data in cache for title: {}", name);
             return cached;
         }
 
         Optional<TitleEnrichmentData> fromApi = omdbBoundary.searchByTitle(name);
-        fromApi.ifPresent(data -> titleEnrichmentCache.put(name, data));
+
+        fromApi.ifPresent(data -> {
+            titleEnrichmentCache.put(name, data);
+            log.info("Enrichment data retrieved from API and cached for title: {}", name);
+        });
+
         return fromApi;
     }
 

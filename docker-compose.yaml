@@ -37,7 +37,7 @@ services:
       - app-network
 
   rabbitmq:
-    image: rabbitmq:4.1-management-alpine
+    image: rabbitmq:4.1.8-management-alpine
     container_name: rabbitmq-titleregistration
     ports:
       - "5672:5672"
